@@ -1,13 +1,10 @@
 package main
 
-import (
-	"fmt"
-
-	"github.com/michael_cho77/something"
-)
+import "fmt"
 
 func main() {
-	fmt.Println("Hello World")
-	something.SayHello()
-	something.SayBye()
+	//var name string = "Michael"
+	name := "Michael"
+	name = "gg"
+	fmt.Print(name)
 }
