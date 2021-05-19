@@ -2,8 +2,15 @@ package main
 
 import "fmt"
 
+type person struct {
+	name    string
+	age     int
+	favFood []string
+}
+
 func main() {
-	names := []string{"one", "two", "three"}
-	names = append(names, "Four")
-	fmt.Println(names)
+	favFood := []string{"Rice", "ramen"}
+	michael := person{name: "michael", age: 10, favFood: favFood}
+	fmt.Println(michael.name)
+
 }
