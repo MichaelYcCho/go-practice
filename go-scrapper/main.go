@@ -3,12 +3,14 @@ package main
 import (
 	"fmt"
 
-	"github.com/michael_cho77/go-practice/go-scrapper/accounts"
+	"github.com/michael_cho77/go-practice/go-scrapper/mydict"
 )
 
 func main() {
-	account := accounts.NewAccount("michael")
-	account.Deposit(10)
-
-	fmt.Println(account.String())
+	dictionary := mydict.Dictionary{"first": "First word"}
+	definition, err := dictionary.Search("Second")
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println(definition)
 }
