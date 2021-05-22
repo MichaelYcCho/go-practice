@@ -2,20 +2,18 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/michael_cho77/go-practice/go-scrapper/mydict"
+	"time"
 )
 
 func main() {
-	dictionary := mydict.Dictionary{}
-	baseWord := "hello"
-	dictionary.Add(baseWord, "First")
-	dictionary.Search(baseWord)
-	dictionary.Delete(baseWord)
-	word, err := dictionary.Search(baseWord)
-	if err != nil {
-		fmt.Println(err)
-	} else {
-		fmt.Println(word)
+	go sexyCount("nico")
+	go sexyCount("flynn")
+	time.Sleep(time.Second * 5)
+}
+
+func sexyCount(person string) {
+	for i := 0; i < 10; i++ {
+		fmt.Println(person, "is sexy", i)
+		time.Sleep(time.Second)
 	}
 }
