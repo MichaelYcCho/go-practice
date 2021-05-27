@@ -1,19 +1,25 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-func main() {
-	var myString string
-	myString = "Green"
-
-	fmt.Println("Origin String is", myString)
-
-	changeUsingPointer(&myString)
-	fmt.Println("After String is", myString)
+type myStruct struct {
+	FirstName string
 }
 
-func changeUsingPointer(s *string) {
-	fmt.Println(s)
-	newValue := "Red"
-	*s = newValue
+func (m *myStruct) printFirstName() string {
+	return m.FirstName
+}
+
+func main() {
+	var myVar myStruct
+	myVar.FirstName = "John"
+
+	myVar2 := myStruct{
+		FirstName: "Mary",
+	}
+	fmt.Println(myVar.printFirstName())
+	fmt.Println(myVar2.printFirstName())
+
 }
