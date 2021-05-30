@@ -18,8 +18,10 @@ func main() {
 	intChan := make(chan int)
 	defer close(intChan)
 
-	go CalculateValue(intChan)
-
-	num := <-intChan
-	fmt.Println(num)
+	for i := 0; i < 2; i++ {
+		go CalculateValue(intChan)
+	}
+	for j := 0; j < 2; j++ {
+		fmt.Println(<-intChan)
+	}
 }
