@@ -1,25 +1,19 @@
 package main
 
 import (
-	"errors"
-	"log"
+	"fmt"
+	"net/http"
 )
 
 func main() {
-	result, err := divide(100, 0)
-	if err != nil {
-		log.Println(err)
-		return
-	}
 
-	log.Println("result of division is", result)
-}
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		n, err := fmt.Fprintf(w, "Hello, world")
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(fmt.Sprintf("Number fo bytes written: %d", n))
+	})
 
-func divide(x, y float32) (float32, error) {
-	var result float32
-	if y == 0 {
-		return result, errors.New("cannot divide by 0")
-	}
-	result = x / y
-	return result, nil
+	http.ListenAndServe(":8080", nil)
 }
