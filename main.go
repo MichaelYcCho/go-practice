@@ -8,9 +8,9 @@ import (
 
 func main() {
 	chain := blockchain.GetBlockchain()
-	chain.AddBLock("Second BLock")
-	chain.AddBLock("Third dBLock")
-	chain.AddBLock("Fourth BLock")
+	chain.AddBlock("Second BLock")
+	chain.AddBlock("Third dBLock")
+	chain.AddBlock("Fourth BLock")
 	for _, block := range chain.AllBlocks() {
 		fmt.Printf("Data: %s\n", block.Data)
 		fmt.Printf("Hash: %s\n", block.Hash)
