@@ -4,12 +4,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"text/template"
+
+	"github.com/michael_cho77/go-michael-coin/blockchain"
 )
 
 const port string = ":4000"
 
+type homeData struct {
+	PageTitle string
+	Blocks    []*blockchain.Block
+}
+
 func home(rw http.ResponseWriter, r *http.Request) {
-	fmt.Fprint(rw, "Home Page!")
+	tmpl := template.Must(template.ParseFiles("templates/home.gohtml"))
+	data := homeData{"Home", blockchain.GetBlockchain().AllBlocks()}
+	tmpl.Execute(rw, data)
 }
 
 func main() {
