@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/michael_cho77/go-michael-coin/blockchain"
@@ -35,6 +36,10 @@ type addBlockBody struct {
 	Message string
 }
 
+type errorResponse struct {
+	ErrorMessage string `json:"errorMessage"`
+}
+
 func documentation(rw http.ResponseWriter, r *http.Request) {
 	data := []urlDescription{
 		{
@@ -44,6 +49,12 @@ func documentation(rw http.ResponseWriter, r *http.Request) {
 		},
 		{
 			URL:         url("/blocks"),
+			Method:      "POST",
+			Description: "Add A Block",
+			Payload:     "data:string",
+		},
+		{
+			URL:         url("/blocks/{height}"),
 			Method:      "POST",
 			Description: "Add A Block",
 			Payload:     "data:string",
@@ -60,7 +71,7 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 		json.NewEncoder(rw).Encode(blockchain.GetBlockchain().AllBlocks())
 	case "POST":
 		var addBlockBody addBlockBody
-		utils.HadlerErr(json.NewDecoder(r.Body).Decode(&addBlockBody))
+		utils.HandlerErr(json.NewDecoder(r.Body).Decode(&addBlockBody))
 		blockchain.GetBlockchain().AddBlock(addBlockBody.Message)
 		rw.WriteHeader(http.StatusCreated)
 	}
@@ -68,8 +79,15 @@ func blocks(rw http.ResponseWriter, r *http.Request) {
 
 func block(rw http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	id := vars["id"]
-	fmt.Println(id)
+	id, err := strconv.Atoi(vars["height"])
+	utils.HandlerErr(err)
+	block, err := blockchain.GetBlockchain().GetBlock(id)
+	encoder := json.NewEncoder(rw)
+	if err == blockchain.ErrorNotFound {
+		encoder.Encode(errorResponse{fmt.Sprint(err)})
+	} else {
+		encoder.Encode(block)
+	}
 }
 
 func Start(aPort int) {
@@ -77,7 +95,7 @@ func Start(aPort int) {
 	port = fmt.Sprintf(":%d", aPort)
 	router.HandleFunc("/", documentation).Methods("GET")
 	router.HandleFunc("/blocks", blocks).Methods("GET", "POST")
-	router.HandleFunc("/blocks/{id:[0-9]+}", block).Methods("GET")
+	router.HandleFunc("/blocks/{height:[0-9]+}", block).Methods("GET")
 	fmt.Printf("Listening on http://localhost%s\n", port)
 	log.Fatal(http.ListenAndServe(port, router))
 }
