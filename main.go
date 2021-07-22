@@ -1,11 +1,11 @@
 package main
 
 import (
-	"github.com/michael_cho77/go-michael-coin/blockchain"
 	"github.com/michael_cho77/go-michael-coin/cli"
+	"github.com/michael_cho77/go-michael-coin/db"
 )
 
 func main() {
-	blockchain.Blockchain()
+	defer db.Close()
 	cli.Start()
 }
