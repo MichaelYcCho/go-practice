@@ -34,4 +34,4 @@ POST http://localhost:4000/transactions
 
 
 ### transaction 승인
-http://localhost:4000/balance/nobody?total=true 
+http://localhost:4000/balance/michael?total=true 
