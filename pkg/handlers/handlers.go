@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/yc/go-web-base-practice/pkg/render"
+	"github.com/michael_cho77/go-web-base-practice/pkg/render"
 )
 
 // Home is the handler for the home page
