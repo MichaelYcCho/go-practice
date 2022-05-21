@@ -15,7 +15,7 @@ type Handler struct {
 	db dblayer.DBLayer
 }
 
-func Newhandler() (*Handler, error) {
+func NewHandler() (*Handler, error) {
 	return new(Handler), nil
 }
 

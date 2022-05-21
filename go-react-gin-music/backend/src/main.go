@@ -1,7 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"log"
+
+	"github.com/MichaelYcCho/go-practice/go-react-gin-music/backend/src/rest"
+)
 
 func main() {
-	fmt.Println("일단 테스트")
+	log.Println("Main log....")
+	rest.RunAPI("127.0.0.1:8000")
 }
