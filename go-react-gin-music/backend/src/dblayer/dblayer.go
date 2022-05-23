@@ -1,6 +1,10 @@
 package dblayer
 
-import "github.com/MichaelYcCho/go-practice/go-react-gin-music/backend/src/models"
+import (
+	"errors"
+
+	"github.com/MichaelYcCho/go-practice/go-react-gin-music/backend/src/models"
+)
 
 type DBLayer interface {
 	GetAllProducts() ([]models.Product, error)
@@ -13,3 +17,5 @@ type DBLayer interface {
 	SignOutUserById(int) error
 	GetCustomerOrdersByID(int) ([]models.Order, error)
 }
+
+var ErrINVALIDPASSWORD = errors.New("Invalid password")
