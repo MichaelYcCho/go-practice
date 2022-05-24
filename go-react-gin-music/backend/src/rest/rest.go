@@ -1,6 +1,10 @@
 package rest
 
-import "github.com/gin-gonic/gin"
+import (
+	"fmt"
+
+	"github.com/gin-gonic/gin"
+)
 
 func RunAPI(address string) error {
 	h, err := NewHandler()
@@ -13,7 +17,8 @@ func RunAPI(address string) error {
 func RunAPIWithHandler(address string, h HandlerInterface) error {
 	//Get gin's default engine
 	r := gin.Default()
-
+	r.Use(MyCustomLogger())
+	//r.Use(Middleware1(), Middleware2() ...)
 	//get products
 	r.GET("/products", h.GetProducts)
 	//get promos
@@ -41,5 +46,19 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 		usersGroup.POST("/signin", h.SignIn)
 		usersGroup.POST("", h.AddUser)
 	}
+
+	r.Static("/img", "../public/img")
+
+	//주석 이하는 https를 사용하고싶을경우
+	//return autotls.Run(r, address)
 	return r.Run(address)
+	//return r.RunTLS(address, "cert.pem", "key.pem")
+}
+
+func MyCustomLogger() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		fmt.Println("************************************")
+		c.Next()
+		fmt.Println("************************************")
+	}
 }
