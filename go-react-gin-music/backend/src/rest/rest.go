@@ -19,6 +19,8 @@ func RunAPIWithHandler(address string, h HandlerInterface) error {
 	r := gin.Default()
 	r.Use(MyCustomLogger())
 	//r.Use(Middleware1(), Middleware2() ...)
+
+	r.GET("/", h.GetMainPage)
 	//get products
 	r.GET("/products", h.GetProducts)
 	//get promos

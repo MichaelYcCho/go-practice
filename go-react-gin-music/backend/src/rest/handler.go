@@ -20,11 +20,18 @@ type Handler struct {
 	db dblayer.DBLayer
 }
 
-func NewHandler() (*Handler, error) {
-	return new(Handler), nil
+func NewHandler() (HandlerInterface, error) {
+	db, err := dblayer.NewORM()
+	if err != nil {
+		return nil, err
+	}
+	return &Handler{
+		db: db,
+	}, nil
 }
 
 type HandlerInterface interface {
+	GetMainPage(c *gin.Context)
 	GetProducts(c *gin.Context)
 	GetPromos(c *gin.Context)
 	AddUser(c *gin.Context)
