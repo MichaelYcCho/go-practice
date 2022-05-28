@@ -21,6 +21,10 @@ type Handler struct {
 }
 
 func NewHandler() (HandlerInterface, error) {
+	return NewHandlerWithParams()
+}
+
+func NewHandlerWithParams() (HandlerInterface, error) {
 	db, err := dblayer.NewORM()
 	if err != nil {
 		return nil, err
@@ -28,6 +32,10 @@ func NewHandler() (HandlerInterface, error) {
 	return &Handler{
 		db: db,
 	}, nil
+}
+
+func NewHandlerWithDB(db dblayer.DBLayer) HandlerInterface {
+	return &Handler{db: db}
 }
 
 type HandlerInterface interface {
