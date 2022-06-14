@@ -34,3 +34,5 @@ go.work
 .DS_Store
 
 .vscode
+
+*.env
