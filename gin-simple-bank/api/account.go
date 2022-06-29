@@ -2,7 +2,6 @@ package api
 
 import (
 	"database/sql"
-	"fmt"
 	"net/http"
 
 	db "github.com/MichaelYcCho/go-practice/gin-simple-bank/db/sqlc"
@@ -87,8 +86,6 @@ func (server *Server) listAccounts(ctx *gin.Context) {
 		Limit:  req.PageSize,
 		Offset: (req.PageID - 1) * req.PageSize,
 	}
-
-	fmt.Println("음", arg)
 
 	accounts, err := server.store.ListAccounts(ctx, arg)
 	if err != nil {
