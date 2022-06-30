@@ -11,7 +11,7 @@ import (
 // PasetoMaker is a PASETO token maker
 type PasetoMaker struct {
 	paseto       *paseto.V2
-	symmetricKey []byte
+	symmetricKey []byte // 대칭키
 }
 
 // NewPasetoMaker creates a new PasetoMaker
