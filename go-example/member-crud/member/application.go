@@ -50,7 +50,7 @@ func (app *Application) Update(request UpdateRequest) (UpdateResponse, error) {
 		return UpdateResponse{}, err
 	}
 
-	_, err = app.repository.UpdateRepository(*newMembership)
+	_, err = app.repository.UpdateRepositoryData(*newMembership)
 	if err != nil {
 		return UpdateResponse{}, err
 	}
