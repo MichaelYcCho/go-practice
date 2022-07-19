@@ -71,3 +71,101 @@ func TestCreateMembership(t *testing.T) {
 		}
 	})
 }
+
+func TestUpdate(t *testing.T) {
+	t.Run("Membership Update", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		res, err := app.Create(CreateRequest{
+			UserName:       "jenny",
+			MembershipType: "payco",
+		})
+
+		req := UpdateRequest{
+			ID:             res.ID,
+			UserName:       "jenny",
+			MembershipType: "naver",
+		}
+
+		_, err = app.Update(req)
+		membershipFromData, _ := app.repository.data[res.ID]
+
+		assert.Equal(t, "naver", membershipFromData.MembershipType)
+		assert.Nil(t, err)
+	})
+
+	t.Run("Duplicate Error When Exist Name", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		app.Create(CreateRequest{
+			UserName:       "jenny",
+			MembershipType: "payco",
+		})
+
+		_, err := app.Update(UpdateRequest{
+			ID:             "update-1",
+			UserName:       "jenny",
+			MembershipType: "payco",
+		})
+
+		if assert.Error(t, err) {
+			assert.Equal(t, errors.New("already existed name"), err)
+		}
+	})
+
+	t.Run("Exception When Membership ID is None", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		_, err := app.Update(UpdateRequest{
+			ID:             "",
+			UserName:       "jenny",
+			MembershipType: "payco",
+		})
+
+		if assert.Error(t, err) {
+			assert.Equal(t, errors.New("need id"), err)
+		}
+	})
+
+	t.Run("Exception When Membership UserName is None", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		_, err := app.Update(UpdateRequest{
+			ID:             "update-2",
+			UserName:       "",
+			MembershipType: "payco",
+		})
+
+		if assert.Error(t, err) {
+			assert.Equal(t, errors.New("need user_name"), err)
+		}
+	})
+
+	t.Run("Exception MembershipType is None", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		_, err := app.Update(UpdateRequest{
+			ID:             "update-3",
+			UserName:       "jenny",
+			MembershipType: "",
+		})
+
+		if assert.Error(t, err) {
+			assert.Equal(t, errors.New("need membership type"), err)
+		}
+	})
+
+	t.Run("Exception MembershipType is Not naver/payco/toss ", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		_, err := app.Update(UpdateRequest{
+			ID:             "update-4",
+			UserName:       "jenny",
+			MembershipType: "kakao",
+		})
+
+		if assert.Error(t, err) {
+			assert.Equal(t, errors.New("choose membership type : naver, payco, toss"), err)
+		}
+	})
+}
