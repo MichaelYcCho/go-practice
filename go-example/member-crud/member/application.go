@@ -15,10 +15,10 @@ func NewApplication(repository Repository) *Application {
 
 func (app *Application) Create(request CreateRequest) (CreateResponse, error) {
 	membershipBuilder := NewMembershipGenerator()
-	member_repository := app.repository
-	member_count := len(member_repository.data)
+	memberRepository := app.repository
+	memberCount := len(memberRepository.data)
 
-	id := strconv.Itoa(member_count + 1)
+	id := strconv.Itoa(memberCount + 1)
 	log.Println(id)
 
 	membershipBuilder.
@@ -31,8 +31,7 @@ func (app *Application) Create(request CreateRequest) (CreateResponse, error) {
 		return CreateResponse{}, err
 	}
 
-	_, err = app.repository.
-		AddRepository(*membership)
+	_, err = app.repository.CreateMembership(*membership)
 	if err != nil {
 		return CreateResponse{}, err
 	}
@@ -50,7 +49,7 @@ func (app *Application) Update(request UpdateRequest) (UpdateResponse, error) {
 		return UpdateResponse{}, err
 	}
 
-	_, err = app.repository.UpdateRepositoryData(*newMembership)
+	_, err = app.repository.UpdateMembership(*newMembership)
 	if err != nil {
 		return UpdateResponse{}, err
 	}
