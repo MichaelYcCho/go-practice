@@ -1,7 +1,6 @@
 package member
 
 import (
-	"log"
 	"strconv"
 )
 
@@ -19,7 +18,6 @@ func (app *Application) Create(request CreateRequest) (CreateResponse, error) {
 	memberCount := len(memberRepository.data)
 
 	id := strconv.Itoa(memberCount + 1)
-	log.Println(id)
 
 	membershipBuilder.
 		SetID(id).
@@ -61,6 +59,13 @@ func (app *Application) Update(request UpdateRequest) (UpdateResponse, error) {
 	}, nil
 }
 
-func (app *Application) Delete(id string) error {
-	return nil
+func (app *Application) Delete(request DeleteRequest) (DeleteResponse, error) {
+	if request.ID == "" {
+		return DeleteResponse{}, ErrUserIDIsRequired
+	}
+	if _, ok := app.repository.GetMembershipByID(request.ID); !ok {
+		return DeleteResponse{}, ErrUserIDNotFound
+	}
+
+	return app.repository.DeleteMembership(request)
 }
