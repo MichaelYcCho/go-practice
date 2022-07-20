@@ -1,7 +1,5 @@
 package member
 
-import "errors"
-
 type Repository struct {
 	data map[string]Membership
 }
@@ -13,7 +11,7 @@ func NewRepository(data map[string]Membership) *Repository {
 func (r *Repository) CreateMembership(m Membership) (Membership, error) {
 	for _, membership := range r.data {
 		if membership.UserName == m.UserName {
-			return Membership{}, errors.New("already existed user_name")
+			return Membership{}, ErrUserAlreadyExists
 		}
 	}
 	r.data[m.ID] = m
@@ -26,7 +24,7 @@ func (r *Repository) UpdateMembership(m Membership) (Membership, error) {
 			continue
 		}
 		if membership.UserName == m.UserName {
-			return Membership{}, errors.New("already existed name")
+			return Membership{}, ErrUserAlreadyExists
 		}
 	}
 	r.data[m.ID] = m

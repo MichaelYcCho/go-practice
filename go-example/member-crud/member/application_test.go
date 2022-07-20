@@ -1,7 +1,6 @@
 package member
 
 import (
-	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -29,7 +28,7 @@ func TestCreateMembership(t *testing.T) {
 
 		_, err := app.Create(existedNameReq)
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("already existed user_name"), err)
+			assert.Equal(t, ErrUserAlreadyExists, err)
 		}
 	})
 	t.Run("Fail When MemberName is nil", func(t *testing.T) {
@@ -41,7 +40,7 @@ func TestCreateMembership(t *testing.T) {
 
 		_, err := app.Create(req)
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("need user_name"), err)
+			assert.Equal(t, ErrUserNameIsRequired, err)
 		}
 	})
 
@@ -54,7 +53,7 @@ func TestCreateMembership(t *testing.T) {
 
 		_, err := app.Create(req)
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("need membership type"), err)
+			assert.Equal(t, ErrMembershipTypeIsRequired, err)
 		}
 	})
 
@@ -67,7 +66,7 @@ func TestCreateMembership(t *testing.T) {
 
 		_, err := app.Create(req)
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("choose membership type : naver, payco, toss"), err)
+			assert.Equal(t, ErrInvalidMembershipType, err)
 		}
 	})
 }
@@ -109,7 +108,7 @@ func TestUpdate(t *testing.T) {
 		})
 
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("already existed name"), err)
+			assert.Equal(t, ErrUserAlreadyExists, err)
 		}
 	})
 
@@ -123,7 +122,7 @@ func TestUpdate(t *testing.T) {
 		})
 
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("need id"), err)
+			assert.Equal(t, ErrUserIDIsRequired, err)
 		}
 	})
 
@@ -137,7 +136,7 @@ func TestUpdate(t *testing.T) {
 		})
 
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("need user_name"), err)
+			assert.Equal(t, ErrUserNameIsRequired, err)
 		}
 	})
 
@@ -151,7 +150,7 @@ func TestUpdate(t *testing.T) {
 		})
 
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("need membership type"), err)
+			assert.Equal(t, ErrMembershipTypeIsRequired, err)
 		}
 	})
 
@@ -165,7 +164,7 @@ func TestUpdate(t *testing.T) {
 		})
 
 		if assert.Error(t, err) {
-			assert.Equal(t, errors.New("choose membership type : naver, payco, toss"), err)
+			assert.Equal(t, ErrInvalidMembershipType, err)
 		}
 	})
 }
