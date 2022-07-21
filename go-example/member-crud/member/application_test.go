@@ -168,3 +168,55 @@ func TestUpdate(t *testing.T) {
 		}
 	})
 }
+
+func TestDelete(t *testing.T) {
+	t.Run("Delete Membership", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+		res, err := app.Create(CreateRequest{
+			UserName:       "jenny",
+			MembershipType: "naver",
+		})
+		assert.Nil(t, err)
+
+		deleteReq := DeleteRequest{ID: res.ID}
+
+		deleteRes, _ := app.Delete(deleteReq)
+		assert.Equal(t, res.ID, deleteRes.ID)
+
+	})
+
+	t.Run("Exception When not write Id", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+		_, err := app.Create(CreateRequest{
+			UserName:       "jenny",
+			MembershipType: "naver",
+		})
+		assert.Nil(t, err)
+
+		deleteReq := DeleteRequest{ID: ""}
+		_, err = app.Delete(deleteReq)
+
+		if assert.Error(t, err) {
+			assert.Equal(t, ErrUserIDIsRequired, err)
+		}
+
+	})
+
+	t.Run("Exception When Id is None", func(t *testing.T) {
+		app := NewApplication(*NewRepository(map[string]Membership{}))
+
+		_, err := app.Create(CreateRequest{
+			UserName:       "jenny",
+			MembershipType: "naver",
+		})
+		assert.Nil(t, err)
+
+		req := DeleteRequest{ID: "uuid"}
+
+		_, err = app.Delete(req)
+
+		if assert.Error(t, err) {
+			assert.Equal(t, ErrUserIDNotFound, err)
+		}
+	})
+}
