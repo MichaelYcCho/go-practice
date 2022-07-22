@@ -1,4 +1,4 @@
-module github.com/MichaelYcCho/go-practice/go-example/member-crud
+module github.com/MichaelYcCho/go-practice/go-example/member-crud/member-crud-struct
 
 go 1.18
 
