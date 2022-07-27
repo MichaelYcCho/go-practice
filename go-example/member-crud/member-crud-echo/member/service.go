@@ -44,10 +44,7 @@ func (service *Service) Create(request CreateRequest) (CreateResponse, error) {
 
 	_, err = service.repository.CreateMembership(*membership)
 	if err != nil {
-		return CreateResponse{
-			Code:    http.StatusInternalServerError,
-			Message: "Repository : Create Error",
-		}, err
+		return CreateResponse{}, err
 	}
 
 	return CreateResponse{
@@ -120,7 +117,7 @@ func (service *Service) Update(request UpdateRequest) (UpdateResponse, error) {
 func (service *Service) GetByID(id string) (GetResponse, error) {
 	membership, err := service.repository.GetMembershipByID(id)
 	if err != nil {
-		return GetResponse{}, nil
+		return GetResponse{}, err
 	}
 	return GetResponse{
 		ID:             membership.ID,
@@ -148,10 +145,7 @@ func (service *Service) Delete(request DeleteRequest) (DeleteResponse, error) {
 
 	res, err := service.repository.DeleteMembership(deleteReq)
 	if err != nil {
-		return DeleteResponse{
-			Code:    http.StatusInternalServerError,
-			Message: "Can't delete membership",
-		}, err
+		return DeleteResponse{}, err
 	}
 
 	return res, nil

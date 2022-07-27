@@ -12,4 +12,5 @@ var (
 	ErrNotFoundMembership       = errors.New("not found membership")
 	ErrUpdateRequestIsRequired  = errors.New("ID or username or membership_type is nil")
 	ErrUserNotFound             = errors.New("user not found")
+	ErrBindingError             = errors.New("request binding error")
 )

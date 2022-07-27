@@ -36,10 +36,10 @@ func (s *Server) Routes(e *echo.Echo) {
 }
 
 func RouteMemberships(e *echo.Group, c Controller) {
-	e.POST("/", c.Create)
-	e.GET("/:id", c.Read)
-	e.PUT("/:id", c.Update)
-	e.DELETE("/:id", c.Delete)
+	e.POST("/memberships/", c.Create)
+	e.GET("/memberships/:id", c.Read)
+	e.PUT("/memberships/:id", c.Update)
+	e.DELETE("/memberships/:id", c.Delete)
 
 	e.POST("/memberships", c.Create, middleware.RequestIDWithConfig(middleware.RequestIDConfig{
 		TargetHeader: "X-My-Request-Header",
