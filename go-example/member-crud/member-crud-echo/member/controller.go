@@ -41,7 +41,7 @@ func (controller Controller) Update(c echo.Context) error {
 	var req UpdateRequest
 	err := c.Bind(&req)
 	if err != nil {
-		return echo.ErrInternalServerError
+		return err
 	}
 	res, _ := controller.service.Update(req)
 	return c.JSON(res.Code, res)
@@ -49,9 +49,9 @@ func (controller Controller) Update(c echo.Context) error {
 
 func (controller Controller) Delete(c echo.Context) error {
 	id := c.Param("id")
-	res, err := controller.service.Delete(DeleteRequest{ID: id})
+	res, err := controller.service.Delete(id)
 	if err != nil {
-		return echo.ErrInternalServerError
+		return err
 	}
 	return c.JSON(res.Code, res)
 }

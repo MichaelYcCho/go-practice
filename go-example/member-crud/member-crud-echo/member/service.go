@@ -126,27 +126,13 @@ func (service *Service) GetByID(id string) (GetResponse, error) {
 	}, nil
 }
 
-func (service *Service) Delete(request DeleteRequest) (DeleteResponse, error) {
-	if request.ID == "" {
-		return DeleteResponse{
-			Code:    http.StatusBadRequest,
-			Message: "user id is required",
-		}, ErrUserIDIsRequired
-
-	}
-	if _, err := service.repository.GetMembershipByID(request.ID); err != nil {
-		return DeleteResponse{
-			Code:    http.StatusBadRequest,
-			Message: "user id not found",
-		}, ErrUserIDNotFound
-	}
-
-	deleteReq := DeleteRequest{ID: request.ID}
-
-	res, err := service.repository.DeleteMembership(deleteReq)
-	if err != nil {
+func (service *Service) Delete(id string) (DeleteResponse, error) {
+	if err := service.ValidateDelete(id); err != nil {
 		return DeleteResponse{}, err
 	}
-
-	return res, nil
+	service.repository.DeleteMembership(id)
+	return DeleteResponse{
+		Code:    http.StatusOK,
+		Message: http.StatusText(http.StatusOK),
+	}, nil
 }

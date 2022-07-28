@@ -49,7 +49,6 @@ func (r *Repository) UpdateMembership(m Membership) (Membership, error) {
 	return m, nil
 }
 
-func (r *Repository) DeleteMembership(req DeleteRequest) (DeleteResponse, error) {
-	delete(r.data, req.ID)
-	return DeleteResponse{ID: req.ID, UserName: r.data[req.ID].UserName, MembershipType: r.data[req.ID].MembershipType}, nil
+func (r *Repository) DeleteMembership(id string) {
+	delete(r.data, id)
 }

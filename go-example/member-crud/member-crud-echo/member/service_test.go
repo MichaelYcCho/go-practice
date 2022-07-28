@@ -155,10 +155,8 @@ func TestDelete(t *testing.T) {
 		})
 		assert.Nil(t, err)
 
-		deleteReq := DeleteRequest{ID: res.ID}
-
-		deleteRes, _ := app.Delete(deleteReq)
-		assert.Equal(t, res.ID, deleteRes.ID)
+		_, err = app.Delete(res.ID)
+		assert.Nil(t, err)
 
 	})
 
@@ -170,12 +168,8 @@ func TestDelete(t *testing.T) {
 		})
 		assert.Nil(t, err)
 
-		deleteReq := DeleteRequest{ID: ""}
-		_, err = app.Delete(deleteReq)
-
-		if assert.Error(t, err) {
-			assert.Equal(t, ErrUserIDIsRequired, err)
-		}
+		_, err = app.Delete("")
+		assert.Equal(t, ErrUserIDIsRequired, err)
 
 	})
 
@@ -188,12 +182,8 @@ func TestDelete(t *testing.T) {
 		})
 		assert.Nil(t, err)
 
-		req := DeleteRequest{ID: "uuid"}
+		_, err = app.Delete("uuid")
+		assert.Equal(t, ErrUserIDNotFound, err)
 
-		_, err = app.Delete(req)
-
-		if assert.Error(t, err) {
-			assert.Equal(t, ErrUserIDNotFound, err)
-		}
 	})
 }
