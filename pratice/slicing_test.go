@@ -8,7 +8,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGolang(t *testing.T) {
+func TestSlicing(t *testing.T) {
 	t.Run("TrimSpace를 통한 공백제거", func(t *testing.T) {
 
 		str := "Mike, Marry, John, Nami"
