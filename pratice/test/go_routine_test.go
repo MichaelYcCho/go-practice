@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestGoRoutine(t *testing.T) {
+func TestGoRoutine_01(t *testing.T) {
 
 	t.Run("goroutine을 활용한 slice에 값 추가", func(t *testing.T) {
 		var numbers [100]int
@@ -36,4 +36,24 @@ func TestGoRoutine(t *testing.T) {
 
 		assert.ElementsMatch(t, expected, numbers)
 	})
+}
+
+func TestMutex(t *testing.T) {
+	// Mutex(뮤텍스)는 여러 고루틴이 공유하는 데이터를 보호할 때 사용
+	var mutex sync.Mutex
+	var wg sync.WaitGroup
+
+	var counter = 0
+	for i := 0; i < 5000; i++ {
+		wg.Add(1)
+		go func() {
+			mutex.Lock()
+			counter++
+
+			defer wg.Done()
+			defer mutex.Unlock()
+		}()
+	}
+	wg.Wait()
+	t.Logf("counter: %d", counter)
 }
