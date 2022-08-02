@@ -10,5 +10,8 @@ func main() {
 	//a := []int{1, 2, 3, 4, 5}
 	//grammar.Variadic_parameters(10, a...)
 
-	grammar.Calculate()
+	//grammar.Calculate()
+
+	grammar.Slicing()
+	grammar.SlicingSoulution()
 }
