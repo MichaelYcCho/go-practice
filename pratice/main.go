@@ -12,6 +12,9 @@ func main() {
 
 	//grammar.Calculate()
 
-	grammar.Slicing()
-	grammar.SlicingSoulution()
+	//grammar.Slicing()
+	//grammar.SlicingSoulution()
+
+	//grammar.MakeSetUsingMap01()
+	grammar.MakeSetUsingMap02()
 }
