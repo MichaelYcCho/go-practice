@@ -16,5 +16,8 @@ func main() {
 	//grammar.SlicingSoulution()
 
 	//grammar.MakeSetUsingMap01()
-	grammar.MakeSetUsingMap02()
+	//grammar.MakeSetUsingMap02()
+
+	//grammar.AnonymousFunc()
+	grammar.Closure()
 }
