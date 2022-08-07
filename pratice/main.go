@@ -19,5 +19,8 @@ func main() {
 	//grammar.MakeSetUsingMap02()
 
 	//grammar.AnonymousFunc()
-	grammar.Closure()
+	//grammar.Closure()
+
+	//grammar.Iota_base()
+	grammar.Iota_bit()
 }
