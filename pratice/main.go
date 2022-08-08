@@ -22,5 +22,8 @@ func main() {
 	//grammar.Closure()
 
 	//grammar.Iota_base()
-	grammar.Iota_bit()
+	//grammar.Iota_bit()
+
+	//grammar.MethodTest()
+	grammar.Start()
 }
