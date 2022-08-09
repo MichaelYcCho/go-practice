@@ -25,5 +25,8 @@ func main() {
 	//grammar.Iota_bit()
 
 	//grammar.MethodTest()
-	grammar.Start()
+	//grammar.Start()
+
+	//grammar.EmbeddingStart01()
+	grammar.EmbeddingStart02()
 }
