@@ -28,5 +28,6 @@ func main() {
 	//grammar.Start()
 
 	//grammar.EmbeddingStart01()
-	grammar.EmbeddingStart02()
+	//grammar.EmbeddingStart02()
+	grammar.EmbeddingStart03()
 }
