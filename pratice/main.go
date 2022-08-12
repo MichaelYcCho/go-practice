@@ -31,5 +31,6 @@ func main() {
 	//grammar.EmbeddingStart02()
 	//grammar.EmbeddingStart03()
 
-	grammar.InterfaceTest01()
+	//grammar.InterfaceTest01()
+	grammar.InterfaceNilTest()
 }
