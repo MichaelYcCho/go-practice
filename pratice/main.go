@@ -34,5 +34,6 @@ func main() {
 	//grammar.InterfaceTest01()
 	//grammar.InterfaceNilTest()
 	//grammar.TypeAssertionTest01()
-	grammar.TypeAssertionTest02()
+	//grammar.TypeAssertionTest02()
+	grammar.TypeSwiching(nil)
 }
