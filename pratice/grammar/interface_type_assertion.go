@@ -27,7 +27,7 @@ func TypeAssertionTest02() error {
 	i2, ok := i.(int)
 	if !ok {
 		// 여기 분기를 탐
-		return fmt.Errorf("Unexpected type for %v", i)
+		return fmt.Errorf("unexpected type for %v", i)
 	}
 	fmt.Println(i2 + 1) // 20
 	return nil

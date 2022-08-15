@@ -41,7 +41,7 @@ func LoginAndGetData(uid, pwd, file string) ([]byte, error) {
 
 func login(uid, pwd string) error {
 	if uid != "admin" || pwd != "admin" {
-		return errors.New("Invalid login")
+		return errors.New("invalid login")
 	}
 	return nil
 }
