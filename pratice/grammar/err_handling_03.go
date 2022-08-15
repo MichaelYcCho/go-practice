@@ -31,7 +31,7 @@ func GenerateErrorFix_02(flag bool) error {
 			Status: NotFound,
 		}
 	}
-	// 첫번째 방법은 명시적으로 error 값을 nil로 반환하는 것이다.
+	// 두번쨰 방법은 error를 가지는 모든 지역변수를 error타입으로 확실하게 명시하는것이다
 	return genErr
 }
 
