@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/MichaelYcCho/go-practice/pratice/grammar"
 )
 
@@ -35,5 +37,10 @@ func main() {
 	//grammar.InterfaceNilTest()
 	//grammar.TypeAssertionTest01()
 	//grammar.TypeAssertionTest02()
-	grammar.TypeSwiching(nil)
+	//grammar.TypeSwiching(nil)
+
+	_, err01 := grammar.ErrorHandling02(3)
+	if err01 != nil {
+		fmt.Println(err01)
+	}
 }
