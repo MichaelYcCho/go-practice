@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/MichaelYcCho/go-practice/pratice/grammar"
 )
 
@@ -43,5 +45,10 @@ func main() {
 	// }
 
 	//grammar.ErrorTest03()
-	grammar.ErrorTest04()
+	//grammar.ErrorTest04()
+
+	_, err02 := grammar.LoginAndGetData02("uid", "pwd", "file")
+	if err02 != nil {
+		fmt.Println(err02)
+	}
 }
