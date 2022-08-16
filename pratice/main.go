@@ -42,5 +42,6 @@ func main() {
 	// 	fmt.Println(err01)
 	// }
 
-	grammar.ErrorTest03()
+	//grammar.ErrorTest03()
+	grammar.ErrorTest04()
 }
