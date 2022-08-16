@@ -52,5 +52,8 @@ func main() {
 	// }
 
 	//grammar.PanicTest()
-	grammar.PanicTest02()
+	//grammar.PanicTest02()
+
+	//grammar.SliceRemove01()
+	grammar.SliceRemove02()
 }
