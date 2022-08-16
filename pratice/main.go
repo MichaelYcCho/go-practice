@@ -44,10 +44,13 @@ func main() {
 
 	//grammar.ErrorTest03()
 	//grammar.ErrorTest04()
-	grammar.ErrorTest04_01()
+	//grammar.ErrorTest04_01()
 
 	// _, err02 := grammar.LoginAndGetData02("uid", "pwd", "file")
 	// if err02 != nil {
 	// 	fmt.Println(err02)
 	// }
+
+	//grammar.PanicTest()
+	grammar.PanicTest02()
 }
