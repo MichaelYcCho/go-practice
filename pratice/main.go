@@ -55,5 +55,7 @@ func main() {
 	//grammar.PanicTest02()
 
 	//grammar.SliceRemove01()
-	grammar.SliceRemove02()
+	//grammar.SliceRemove02()
+
+	grammar.DimensionalSlice()
 }

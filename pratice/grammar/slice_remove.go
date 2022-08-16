@@ -11,6 +11,7 @@ func SliceRemove01() {
 
 }
 
+// 마지막 요소를 명시한 index에 넣는법
 func SliceRemove02() {
 	slice := []string{"a", "b", "c", "d", "e", "f"}
 	index := 1
