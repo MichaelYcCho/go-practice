@@ -57,5 +57,7 @@ func main() {
 	//grammar.SliceRemove01()
 	//grammar.SliceRemove02()
 
-	grammar.DimensionalSlice()
+	//grammar.DimensionalSlice()
+	grammar.PackageTest01()
+
 }
