@@ -58,6 +58,8 @@ func main() {
 	//grammar.SliceRemove02()
 
 	//grammar.DimensionalSlice()
-	grammar.PackageTest01()
+	//grammar.PackageTest01()
+
+	grammar.GoRoutineTest01()
 
 }
