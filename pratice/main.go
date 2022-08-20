@@ -60,6 +60,8 @@ func main() {
 	//grammar.DimensionalSlice()
 	//grammar.PackageTest01()
 
-	grammar.GoRoutineTest01()
+	//grammar.GoRoutineTest01()
+	//grammar.DeadLockCase()
+	grammar.DeadLockSolveCase()
 
 }
