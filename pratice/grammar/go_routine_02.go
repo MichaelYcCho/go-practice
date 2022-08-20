@@ -34,6 +34,8 @@ func DeadLockSolveCase() {
 	}()
 	v := 2
 	var v2 int
+
+	// 하나의 채널에서 데이터를 읽어오면 해당 구문을 실행하고 select문을 종료한다
 	select {
 	case ch2 <- v:
 	case v2 = <-ch1:
