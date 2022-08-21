@@ -62,6 +62,8 @@ func main() {
 
 	//grammar.GoRoutineTest01()
 	//grammar.DeadLockCase()
-	grammar.DeadLockSolveCase()
+	//grammar.DeadLockSolveCase()
+	//grammar.ArgErrorCase()
+	grammar.ArgSolveCase()
 
 }
