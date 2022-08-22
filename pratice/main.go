@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/MichaelYcCho/go-practice/pratice/grammar"
-)
+import "github.com/MichaelYcCho/go-practice/pratice/grammar"
 
 func main() {
 	//grammar.Shadowing()
@@ -19,7 +17,7 @@ func main() {
 	//grammar.MakeSetUsingMap02()
 
 	//grammar.AnonymousFunc()
-	grammar.AnonymousStruct()
+	//grammar.AnonymousStruct()
 	//grammar.Closure()
 
 	//grammar.Iota_base()
@@ -66,5 +64,7 @@ func main() {
 	//grammar.DeadLockSolveCase()
 	//grammar.ArgErrorCase()
 	//grammar.ArgSolveCase()
+
+	grammar.ManyInt()
 
 }
