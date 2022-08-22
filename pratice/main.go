@@ -19,6 +19,7 @@ func main() {
 	//grammar.MakeSetUsingMap02()
 
 	//grammar.AnonymousFunc()
+	grammar.AnonymousStruct()
 	//grammar.Closure()
 
 	//grammar.Iota_base()
@@ -64,6 +65,6 @@ func main() {
 	//grammar.DeadLockCase()
 	//grammar.DeadLockSolveCase()
 	//grammar.ArgErrorCase()
-	grammar.ArgSolveCase()
+	//grammar.ArgSolveCase()
 
 }
