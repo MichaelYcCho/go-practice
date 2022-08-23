@@ -31,6 +31,7 @@ func main() {
 	//grammar.EmbeddingStart03()
 
 	//grammar.InterfaceTest01()
+	grammar.InterfaceExample()
 	//grammar.InterfaceNilTest()
 	//grammar.TypeAssertionTest01()
 	//grammar.TypeAssertionTest02()
@@ -66,6 +67,6 @@ func main() {
 	//grammar.ArgSolveCase()
 
 	//grammar.ManyInt()
-	grammar.Unfurling()
+	//grammar.Unfurling()
 
 }
