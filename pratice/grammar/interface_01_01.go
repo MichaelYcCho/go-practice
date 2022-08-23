@@ -34,6 +34,13 @@ type human interface {
 }
 
 func bar(h human) {
+	// type을 명시(assertion)하여 가장 베이스에 깔린 타입을 핸들링할수도 있다.
+	switch h.(type) {
+	case secretMember:
+		fmt.Println("I am secretMember", h.(secretMember).first, h.(secretMember).last)
+	case member:
+		fmt.Println("I am member", h.(member).first, h.(member).last)
+	}
 	fmt.Println("pass into bar", h)
 }
 
