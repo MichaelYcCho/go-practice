@@ -25,6 +25,8 @@ func (m member) speak() {
 	fmt.Println("I am person", m.first, m.last)
 }
 
+type customtype int
+
 type human interface {
 	// 인터페이스는 값이 하나이상의 타입이 될 수 있게해준다.
 	// speak() 가 붙은 모든 메소드는 type human이기도 하다
@@ -66,5 +68,17 @@ func InterfaceExample() {
 	bar(sm1)
 	bar(sa2)
 	bar(m1)
+	fmt.Println("=======================")
+	fmt.Println()
+
+	//conversion - 전환
+	var x customtype = 42
+	fmt.Println(x)
+	fmt.Printf("%T\n", x)
+
+	var y int
+	y = int(x) // 여기서 전환이 일어남
+	fmt.Println(y)
+	fmt.Printf("%T\n", y)
 
 }
