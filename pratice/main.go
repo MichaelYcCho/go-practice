@@ -17,6 +17,7 @@ func main() {
 	//grammar.MakeSetUsingMap02()
 
 	//grammar.AnonymousFunc()
+	grammar.FunctionExpression()
 	//grammar.AnonymousStruct()
 	//grammar.Closure()
 
@@ -31,7 +32,7 @@ func main() {
 	//grammar.EmbeddingStart03()
 
 	//grammar.InterfaceTest01()
-	grammar.InterfaceExample()
+	//grammar.InterfaceExample()
 	//grammar.InterfaceNilTest()
 	//grammar.TypeAssertionTest01()
 	//grammar.TypeAssertionTest02()

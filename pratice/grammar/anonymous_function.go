@@ -14,3 +14,11 @@ func AnonymousFunc() {
 		}(i)
 	}
 }
+
+// 일급객체 표현식
+func FunctionExpression() {
+	f := func(x int) {
+		fmt.Println("First func expression", x)
+	}
+	f(42)
+}
