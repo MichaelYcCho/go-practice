@@ -22,3 +22,22 @@ func FunctionExpression() {
 	}
 	f(42)
 }
+
+func ReturnString() string {
+	return "Hello World"
+}
+
+// 함수를 반환하는것도 가능하다
+func ReturnFunction() {
+	s1 := ReturnString()
+	fmt.Println(s1)
+
+}
+
+// 함수에서 함수를 반환하는것도 가능하다
+func ReturnFunction2() func() int {
+	return func() int {
+		return 42
+	}
+
+}

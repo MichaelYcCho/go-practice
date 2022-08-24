@@ -17,7 +17,8 @@ func main() {
 	//grammar.MakeSetUsingMap02()
 
 	//grammar.AnonymousFunc()
-	grammar.FunctionExpression()
+	//grammar.FunctionExpression()
+	grammar.ReturnFunction2()
 	//grammar.AnonymousStruct()
 	//grammar.Closure()
 
