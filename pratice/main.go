@@ -18,7 +18,7 @@ func main() {
 
 	//grammar.AnonymousFunc()
 	//grammar.FunctionExpression()
-	grammar.ReturnFunction2()
+	//grammar.ReturnFunction2()
 	//grammar.AnonymousStruct()
 	//grammar.Closure()
 
@@ -70,5 +70,7 @@ func main() {
 
 	//grammar.ManyInt()
 	//grammar.Unfurling()
+
+	grammar.Factorial()
 
 }
