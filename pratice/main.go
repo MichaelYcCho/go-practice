@@ -71,6 +71,7 @@ func main() {
 	//grammar.ManyInt()
 	//grammar.Unfurling()
 
-	grammar.Factorial()
+	//grammar.Factorial()
+	grammar.Pointer01()
 
 }
