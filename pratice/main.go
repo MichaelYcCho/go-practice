@@ -73,6 +73,8 @@ func main() {
 
 	//grammar.Factorial()
 	//grammar.Pointer01()
-	grammar.JsonMarshal()
+
+	//grammar.JsonMarshal()
+	grammar.JsonUnMarshal()
 
 }
