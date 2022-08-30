@@ -77,6 +77,6 @@ func main() {
 	//grammar.JsonMarshal()
 	//grammar.JsonUnMarshal()
 
-	grammar.SortSlice01()
-
+	//grammar.SortSlice01()
+	grammar.SortStruct()
 }
