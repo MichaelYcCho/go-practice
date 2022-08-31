@@ -1,6 +1,8 @@
 package main
 
-import "github.com/MichaelYcCho/go-practice/pratice/grammar"
+import (
+	"github.com/MichaelYcCho/go-practice/pratice/goroutine"
+)
 
 func main() {
 	//grammar.Shadowing()
@@ -80,5 +82,8 @@ func main() {
 	//grammar.SortSlice01()
 	//grammar.SortStruct()
 
-	grammar.BcryptPassword()
+	//grammar.BcryptPassword()
+
+	//Go Routine
+	goroutine.RunTest01()
 }
