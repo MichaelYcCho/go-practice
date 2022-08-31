@@ -78,5 +78,7 @@ func main() {
 	//grammar.JsonUnMarshal()
 
 	//grammar.SortSlice01()
-	grammar.SortStruct()
+	//grammar.SortStruct()
+
+	grammar.BcryptPassword()
 }
