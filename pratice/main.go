@@ -85,5 +85,6 @@ func main() {
 	//grammar.BcryptPassword()
 
 	//Go Routine
-	goroutine.RunTest01()
+	//goroutine.RunTest01()
+	goroutine.RunMethodSet()
 }
