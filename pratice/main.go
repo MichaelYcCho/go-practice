@@ -87,5 +87,6 @@ func main() {
 	//Go Routine
 	//goroutine.RunTest01()
 	//goroutine.RunMethodSet()
-	goroutine.RunSimpleGoroutine()
+	//goroutine.RunSimpleGoroutine()
+	goroutine.RaceFunction()
 }
