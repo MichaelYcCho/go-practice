@@ -24,6 +24,10 @@ func ConnectDatabase() {
 		panic("Failed to connect to database!")
 	}
 
-	db.AutoMigrate(&Book{})
 	DB = db
+
+	db.AutoMigrate(&Book{})
+	GetTableList()
+	DropUnusedColumns(&Book{})
+
 }
