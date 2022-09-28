@@ -26,8 +26,14 @@ func ConnectDatabase() {
 
 	DB = db
 
+	modelList := []interface{}{
+		&Book{},
+		&User{},
+	}
+
 	db.AutoMigrate(&Book{})
+	db.AutoMigrate(&User{})
 	GetTableList()
-	DropUnusedColumns(&Book{})
+	DropUnusedColumns(DB, modelList)
 
 }
