@@ -1,6 +1,10 @@
 package models
 
 import (
+	"errors"
+	"fmt"
+	"log"
+
 	"gorm.io/gorm"
 )
 
@@ -10,6 +14,32 @@ func GetTableList() []string {
 	TableList, _ := DB.Debug().Migrator().GetTables()
 
 	return TableList
+}
+
+// db autoMigrate with transaction
+func AutoMigrateWithTransaction(db *gorm.DB, modelList []interface{}) error {
+
+	log.Println("AutoMigrateWithTransaction Start")
+
+	tx := db.Begin()
+
+	defer func() {
+
+		if r := recover(); r != nil {
+			fmt.Println("롤백됨?")
+			tx.Rollback()
+			panic(errors.New("AutoMigrateWithTransaction Error"))
+		}
+	}()
+	for _, model := range modelList {
+		log.Println("모델이름: ", model)
+		if err := tx.Debug().AutoMigrate(model); err != nil {
+			return err
+		}
+	}
+	tx.Commit()
+
+	return nil
 }
 
 // TODO: 최소 전체 struct 리스트를 받으면 해당 struct를 돌면서 자동으로 필드삭제라도 할수있게 흠....
