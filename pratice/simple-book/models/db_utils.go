@@ -2,7 +2,6 @@ package models
 
 import (
 	"errors"
-	"fmt"
 	"log"
 
 	"gorm.io/gorm"
@@ -19,25 +18,16 @@ func GetTableList() []string {
 // db autoMigrate with transaction
 func AutoMigrateWithTransaction(db *gorm.DB, modelList []interface{}) error {
 
-	log.Println("AutoMigrateWithTransaction Start")
-
-	tx := db.Begin()
-
 	defer func() {
-
 		if r := recover(); r != nil {
-			fmt.Println("롤백됨?")
-			tx.Rollback()
 			panic(errors.New("AutoMigrateWithTransaction Error"))
 		}
 	}()
-	for _, model := range modelList {
-		log.Println("모델이름: ", model)
-		if err := tx.Debug().AutoMigrate(model); err != nil {
-			return err
-		}
+
+	if err := db.Debug().AutoMigrate(modelList...); err != nil {
+		log.Println("Migration Error: ", err)
+		return err
 	}
-	tx.Commit()
 
 	return nil
 }
@@ -78,3 +68,17 @@ func DropUnusedColumns(db *gorm.DB, modelList []interface{}) {
 		}
 	}
 }
+
+/*
+
+// make modelList string with ,
+	var modelListString string
+	for i, model := range modelList {
+		modelListString += fmt.Sprintf("%v", model)
+		if i != length-1 {
+			modelListString += ","
+		}
+	}
+	log.Println("modelListString", modelListString)
+
+*/

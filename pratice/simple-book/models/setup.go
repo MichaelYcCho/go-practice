@@ -28,7 +28,7 @@ func ConnectDatabase() {
 
 	modelList := []interface{}{
 		&Book{},
-		"ㅁㄴㅇ",
+		&User{},
 	}
 
 	// db.AutoMigrate(&Book{})
