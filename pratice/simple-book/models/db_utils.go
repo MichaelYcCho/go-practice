@@ -24,7 +24,8 @@ func AutoMigrateWithTransaction(db *gorm.DB, modelList []interface{}) error {
 		}
 	}()
 
-	if err := db.Debug().AutoMigrate(modelList...); err != nil {
+	// raw SQL을 보고싶다면 Debug를 쓸것, db.Debug().AutoMigrate(modelList...);
+	if err := db.AutoMigrate(modelList...); err != nil {
 		log.Println("Migration Error: ", err)
 		return err
 	}
