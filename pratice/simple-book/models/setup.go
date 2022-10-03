@@ -33,7 +33,8 @@ func ConnectDatabase() {
 
 	// db.AutoMigrate(&Book{})
 	// db.AutoMigrate(&User{})
-	AutoMigrateWithTransaction(db, modelList)
+	db.AutoMigrate(modelList...)
+	//AutoMigrateWithTransaction(db, modelList)
 	// GetTableList()
 	// DropUnusedColumns(DB, modelList)
 
