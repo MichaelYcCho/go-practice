@@ -53,3 +53,20 @@ func TestBook_FindBooks(t *testing.T) {
 
 	assert.Equal(t, books[0].Title, testBook.Title)
 }
+
+func TestBook_FindBook(t *testing.T) {
+	db, mock := NewMock()
+	defer db.Close()
+	gormDB := NewGorm(db)
+
+	rows := sqlmock.NewRows([]string{"id", "title", "author"}).
+		AddRow(testBook.ID, testBook.Title, testBook.Author)
+
+	query := "SELECT * FROM `books` WHERE id = ? ORDER BY `books`.`id` LIMIT 1"
+	mock.ExpectQuery(query).WillReturnRows(rows)
+
+	var book Book
+	gormDB.Where("id = ?", testBook.ID).First(&book)
+
+	assert.Equal(t, book.Title, testBook.Title)
+}
