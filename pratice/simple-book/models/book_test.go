@@ -70,3 +70,19 @@ func TestBook_FindBook(t *testing.T) {
 
 	assert.Equal(t, book.Title, testBook.Title)
 }
+
+func TestBook_CreateBook(t *testing.T) {
+	db, mock := NewMock()
+	defer db.Close()
+	gormDB := NewGorm(db)
+
+	query := "INSERT INTO `books` (`title`,`author`) VALUES (?,?,?,?,?)"
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(testBook.Title, testBook.Author).WillReturnResult(sqlmock.NewResult(1, 1))
+
+	gormDB.Create(&testBook)
+
+	assert.NotEmpty(t, testBook.ID)
+	assert.Equal(t, testBook.Title, testBook.Title)
+	assert.Equal(t, testBook.Author, testBook.Author)
+}
