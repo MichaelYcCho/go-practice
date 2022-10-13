@@ -2,12 +2,12 @@ package main
 
 import (
 	"github.com/MichaelYcCho/go-practice/pratice/todo/controllers"
-	"github.com/MichaelYcCho/go-practice/pratice/todo/models"
+	"github.com/MichaelYcCho/go-practice/pratice/todo/database"
 	"github.com/gin-gonic/gin"
 )
 
 func main() {
-	models.ConnectDatabase() // db 연결
+	database.ConnectDatabase() // db 연결
 
 	// Proxy 경로 우회를위해 사용
 	//gin.SetMode(gin.ReleaseMode)
