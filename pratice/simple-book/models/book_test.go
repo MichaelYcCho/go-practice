@@ -2,6 +2,7 @@ package models
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"testing"
 
@@ -76,13 +77,77 @@ func TestBook_CreateBook(t *testing.T) {
 	defer db.Close()
 	gormDB := NewGorm(db)
 
-	query := "INSERT INTO `books` (`title`,`author`) VALUES (?,?,?,?,?)"
-	prep := mock.ExpectPrepare(query)
-	prep.ExpectExec().WithArgs(testBook.Title, testBook.Author).WillReturnResult(sqlmock.NewResult(1, 1))
+	type mockBehavior func(mock sqlmock.Sqlmock, returnedId int, book Book)
 
-	gormDB.Create(&testBook)
+	tests := []struct {
+		name         string
+		inputBook    Book
+		returnedId   int
+		mockBehavior mockBehavior
+		expectError  bool
+	}{
+		{
+			name: "ok",
+			inputBook: Book{
+				Title:  "test title",
+				Author: "test author",
+			},
+			returnedId: 1,
+			mockBehavior: func(mock sqlmock.Sqlmock, returnedId int, book Book) {
+				mock.ExpectQuery("INSERT INTO `books`").
+					WithArgs(book.Title, book.Author).
+					WillReturnRows(sqlmock.NewRows([]string{"ID"}).AddRow(returnedId))
+			},
+			expectError: false,
+		},
+		{
+			name: "Empty field",
+			inputBook: Book{
+				Title:  "",
+				Author: "test author2",
+			},
+			returnedId: 1,
+			mockBehavior: func(mock sqlmock.Sqlmock, returnedId int, book Book) {
+				mock.ExpectQuery("INSERT INTO `books`").
+					WithArgs(book.Title, book.Author).
+					WillReturnRows(sqlmock.NewRows([]string{"ID"}).AddRow(returnedId).
+						RowError(0, fmt.Errorf("error")))
+			},
+			expectError: true,
+		},
+	}
+
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			test.mockBehavior(mock, test.returnedId, test.inputBook)
+			err := gormDB.Create(&test.inputBook).Error
+			if test.expectError {
+				assert.Error(t, err)
+			} else {
+				assert.NoError(t, err)
+			}
+		})
+	}
+}
+
+func TestBook_UpdateBook(t *testing.T) {
+	TestBook_CreateBook(t)
+
+	db, mock := NewMock()
+	defer db.Close()
+	gormDB := NewGorm(db)
+
+	query := "UPDATE `books` SET `title` = ?,`author` = ? WHERE id = ?"
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(testBook.Title, testBook.Author, testBook.ID).WillReturnResult(sqlmock.NewResult(1, 1))
+
+	gormDB.Save(&testBook)
+
+	println(testBook.ID)
+	fmt.Println(testBook.Title)
 
 	assert.NotEmpty(t, testBook.ID)
 	assert.Equal(t, testBook.Title, testBook.Title)
 	assert.Equal(t, testBook.Author, testBook.Author)
+
 }
