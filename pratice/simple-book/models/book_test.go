@@ -77,57 +77,15 @@ func TestBook_CreateBook(t *testing.T) {
 	defer db.Close()
 	gormDB := NewGorm(db)
 
-	type mockBehavior func(mock sqlmock.Sqlmock, returnedId int, book Book)
+	query := "INSERT INTO `books` (`title`,`author`) VALUES (?,?,?,?,?)"
+	prep := mock.ExpectPrepare(query)
+	prep.ExpectExec().WithArgs(testBook.Title, testBook.Author).WillReturnResult(sqlmock.NewResult(1, 1))
 
-	tests := []struct {
-		name         string
-		inputBook    Book
-		returnedId   int
-		mockBehavior mockBehavior
-		expectError  bool
-	}{
-		{
-			name: "ok",
-			inputBook: Book{
-				Title:  "test title",
-				Author: "test author",
-			},
-			returnedId: 1,
-			mockBehavior: func(mock sqlmock.Sqlmock, returnedId int, book Book) {
-				mock.ExpectQuery("INSERT INTO `books`").
-					WithArgs(book.Title, book.Author).
-					WillReturnRows(sqlmock.NewRows([]string{"ID"}).AddRow(returnedId))
-			},
-			expectError: false,
-		},
-		{
-			name: "Empty field",
-			inputBook: Book{
-				Title:  "",
-				Author: "test author2",
-			},
-			returnedId: 1,
-			mockBehavior: func(mock sqlmock.Sqlmock, returnedId int, book Book) {
-				mock.ExpectQuery("INSERT INTO `books`").
-					WithArgs(book.Title, book.Author).
-					WillReturnRows(sqlmock.NewRows([]string{"ID"}).AddRow(returnedId).
-						RowError(0, fmt.Errorf("error")))
-			},
-			expectError: true,
-		},
-	}
+	gormDB.Create(&testBook)
 
-	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
-			test.mockBehavior(mock, test.returnedId, test.inputBook)
-			err := gormDB.Create(&test.inputBook).Error
-			if test.expectError {
-				assert.Error(t, err)
-			} else {
-				assert.NoError(t, err)
-			}
-		})
-	}
+	assert.NotEmpty(t, testBook.ID)
+	assert.Equal(t, testBook.Title, testBook.Title)
+	assert.Equal(t, testBook.Author, testBook.Author)
 }
 
 func TestBook_UpdateBook(t *testing.T) {
