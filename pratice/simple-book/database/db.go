@@ -3,7 +3,7 @@ package database
 import (
 	"os"
 
-	"github.com/MichaelYcCho/go-practice/pratice/todo/models"
+	"github.com/MichaelYcCho/go-practice/pratice/simple-book/models"
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"

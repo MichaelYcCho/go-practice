@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/MichaelYcCho/go-practice/pratice/todo/controllers"
-	"github.com/MichaelYcCho/go-practice/pratice/todo/database"
+	"github.com/MichaelYcCho/go-practice/pratice/simple-book/controllers"
+	"github.com/MichaelYcCho/go-practice/pratice/simple-book/database"
 	"github.com/gin-gonic/gin"
 )
 

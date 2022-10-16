@@ -3,7 +3,7 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/MichaelYcCho/go-practice/pratice/todo/models"
+	"github.com/MichaelYcCho/go-practice/pratice/simple-book/models"
 	"github.com/gin-gonic/gin"
 )
 

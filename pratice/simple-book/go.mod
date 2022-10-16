@@ -1,4 +1,4 @@
-module github.com/MichaelYcCho/go-practice/pratice/todo
+module github.com/MichaelYcCho/go-practice/pratice/simple-book
 
 go 1.18
 
