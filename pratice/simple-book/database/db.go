@@ -38,18 +38,3 @@ func ConnectDatabase() {
 	// DropUnusedColumns(DB, modelList)
 
 }
-
-func GetDB() *gorm.DB {
-	return DB
-}
-
-func GetBooks(db *gorm.DB) ([]models.Book, error) {
-	var books []models.Book
-
-	err := db.Debug().Find(&books).Error
-	if err != nil {
-		return []models.Book{}, err
-	}
-
-	return books, nil
-}
