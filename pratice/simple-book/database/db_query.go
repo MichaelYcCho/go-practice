@@ -20,6 +20,24 @@ func GetBooks(db *gorm.DB) ([]models.Book, error) {
 	return books, nil
 }
 
+func GetBookByID(id string, db *gorm.DB) (models.Book, bool, error) {
+	b := models.Book{}
+
+	query := db.Select("books.*")
+	query = query.Group("books.id")
+	err := query.Where("books.id = ?", id).First(&b).Error
+
+	// err := db.Find(&b).Where(id).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
+		return models.Book{}, false, err
+	}
+
+	if gorm.ErrRecordNotFound == err {
+		return b, false, nil
+	}
+	return b, true, nil
+}
+
 func DeleteBook(id string, db *gorm.DB) error {
 	var b models.Book
 	// err := db.Delete(&b).Where(id).Error
