@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/MichaelYcCho/go-practice/pratice/simple-book/controllers"
+	"log"
+
 	"github.com/MichaelYcCho/go-practice/pratice/simple-book/database"
-	"github.com/gin-gonic/gin"
+	"github.com/MichaelYcCho/go-practice/pratice/simple-book/routers"
 )
 
 func main() {
@@ -12,14 +13,8 @@ func main() {
 	// Proxy 경로 우회를위해 사용
 	//gin.SetMode(gin.ReleaseMode)
 
-	r := gin.Default()
-	println("Start")
-
-	r.GET("/books", controllers.FindBooks)
-	r.GET("/books/:id", controllers.FindBook)
-	r.POST("/books", controllers.CreateBook)
-	r.PATCH("/books/:id", controllers.UpdateBook)
-	r.DELETE("/books/:id", controllers.DeleteBook)
-
-	r.Run(":4000")
+	r := routers.Setup()
+	if err := r.Run("127.0.0.1:4000"); err != nil {
+		log.Fatal(err)
+	}
 }
