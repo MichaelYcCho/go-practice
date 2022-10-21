@@ -21,11 +21,11 @@ func NewMock() (*sql.DB, sqlmock.Sqlmock) {
 }
 
 func NewGorm(db *sql.DB) *gorm.DB {
-	dbDirver := mysql.New(mysql.Config{
+	dbDriver := mysql.New(mysql.Config{
 		Conn:                      db,
 		SkipInitializeWithVersion: true,
 	})
-	gormDB, err := gorm.Open(dbDirver, &gorm.Config{})
+	gormDB, err := gorm.Open(dbDriver, &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
