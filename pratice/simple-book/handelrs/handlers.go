@@ -60,3 +60,33 @@ func (a *APIEnv) CreateBook(c *gin.Context) {
 
 	c.JSON(http.StatusOK, book)
 }
+
+func (a *APIEnv) UpdateBook(c *gin.Context) {
+	id := c.Params.ByName("id")
+	_, exists, err := database.GetBookByID(id, a.DB)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if !exists {
+		c.JSON(http.StatusNotFound, "there is no book in db")
+		return
+	}
+
+	updatedBook := models.Book{}
+
+	err = c.BindJSON(&updatedBook)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	} else {
+		err := database.UpdateBook(a.DB, &updatedBook)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, err.Error())
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, updatedBook)
+}

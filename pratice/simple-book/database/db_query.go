@@ -38,18 +38,18 @@ func GetBookByID(id string, db *gorm.DB) (models.Book, bool, error) {
 	return b, true, nil
 }
 
-func DeleteBook(id string, db *gorm.DB) error {
-	var b models.Book
-	// err := db.Delete(&b).Where(id).Error
-	if err := db.Where("id = ?", id).Delete(&b).Error; err != nil {
-		// if err != nil {
+func UpdateBook(db *gorm.DB, b *models.Book) error {
+	if err := db.Save(&b).Error; err != nil {
 		return err
 	}
 	return nil
 }
 
-func UpdateBook(db *gorm.DB, b *models.Book) error {
-	if err := db.Save(&b).Error; err != nil {
+func DeleteBook(id string, db *gorm.DB) error {
+	var b models.Book
+	// err := db.Delete(&b).Where(id).Error
+	if err := db.Where("id = ?", id).Delete(&b).Error; err != nil {
+		// if err != nil {
 		return err
 	}
 	return nil
