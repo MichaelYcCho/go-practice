@@ -83,10 +83,33 @@ func (a *APIEnv) UpdateBook(c *gin.Context) {
 	} else {
 		err := database.UpdateBook(a.DB, &updatedBook)
 		if err != nil {
-			c.JSON(http.StatusInternalServerError, err.Error())
+			c.JSON(http.StatusInternalServerError, "Update Error")
 			return
 		}
 	}
 
 	c.JSON(http.StatusOK, updatedBook)
+}
+
+func (a *APIEnv) DeleteBook(c *gin.Context) {
+	id := c.Params.ByName("id")
+	_, exists, err := database.GetBookByID(id, a.DB)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	if !exists {
+		c.JSON(http.StatusNotFound, "record not exists")
+		return
+	} else {
+		err := database.DeleteBook(id, a.DB)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, "Delete Error")
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, "Deleted Successfully")
+
 }
