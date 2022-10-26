@@ -73,3 +73,27 @@ func Test_GetBooks_Ok(t *testing.T) {
 	a.Equal(expected, actual)
 	database.ClearTable()
 }
+
+func Test_GetBooks_EmptyResult(t *testing.T) {
+	database.ConnectDatabase()
+	db := database.GetDB()
+	req, w := setGetBooksRouter(db)
+
+	a := assert.New(t)
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
+
+	body, err := ioutil.ReadAll(w.Body)
+	if err != nil {
+		a.Error(err)
+	}
+
+	actual := models.Book{}
+	if err := json.Unmarshal(body, &actual); err != nil {
+		a.Error(err)
+	}
+
+	expected := models.Book{}
+	a.Equal(expected, actual)
+	database.ClearTable()
+}
