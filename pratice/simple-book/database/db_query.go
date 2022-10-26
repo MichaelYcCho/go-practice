@@ -57,5 +57,5 @@ func DeleteBook(id string, db *gorm.DB) error {
 
 func ClearTable() {
 	DB.Exec("DELETE FROM books")
-	DB.Exec("ALTER SEQUENCE books_id_seq RESTART WITH 1")
+	//DB.Exec("ALTER SEQUENCE books_id_seq RESTART WITH 1")
 }

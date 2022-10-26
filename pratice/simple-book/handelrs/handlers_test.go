@@ -2,15 +2,16 @@ package handelrs
 
 import (
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
+	"testing"
+
 	"github.com/MichaelYcCho/go-practice/pratice/simple-book/database"
 	"github.com/MichaelYcCho/go-practice/pratice/simple-book/models"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
-	"io/ioutil"
-	"net/http"
-	"net/http/httptest"
-	"testing"
 )
 
 func insertTestBook(db *gorm.DB) (models.Book, error) {
@@ -52,7 +53,6 @@ func Test_GetBooks_Ok(t *testing.T) {
 	}
 
 	req, w := setGetBooksRouter(db)
-	defer db.Close()
 
 	a := assert.New(t)
 	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
