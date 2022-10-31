@@ -97,3 +97,30 @@ func Test_GetBooks_EmptyResult(t *testing.T) {
 	a.Equal(expected, actual)
 	database.ClearTable()
 }
+
+func setGetBookRouter(db *gorm.DB, url string) (*http.Request, *httptest.ResponseRecorder) {
+	r := gin.New()
+	api := &APIEnv{DB: db}
+	r.GET("/:id", api.GetBook)
+
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		panic(err)
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return req, w
+}
+
+func Test_GetBook_InvalidId(t *testing.T) {
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	req, w := setGetBookRouter(db, "/aa")
+
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
+}
