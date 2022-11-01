@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
 	"github.com/MichaelYcCho/go-practice/pratice/simple-book/database"
@@ -112,6 +113,39 @@ func setGetBookRouter(db *gorm.DB, url string) (*http.Request, *httptest.Respons
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	return req, w
+}
+
+func Test_GetBook_OK(t *testing.T) {
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	book, err := insertTestBook(db)
+	if err != nil {
+		a.Error(err)
+	}
+
+	req, w := setGetBookRouter(db, "/"+strconv.Itoa(int(book.ID)))
+	println("BookID : ", book.ID)
+
+	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+
+	body, err := ioutil.ReadAll(w.Body)
+	if err != nil {
+		a.Error(err)
+	}
+
+	actual := models.Book{}
+	if err := json.Unmarshal(body, &actual); err != nil {
+		a.Error(err)
+	}
+
+	actual.Model = gorm.Model{}
+	expected := book
+	expected.Model = gorm.Model{}
+	a.Equal(expected, actual)
+	database.ClearTable()
 }
 
 func Test_GetBook_InvalidId(t *testing.T) {
