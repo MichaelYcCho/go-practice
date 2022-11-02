@@ -206,6 +206,7 @@ func Test_CreateBook_Ok(t *testing.T) {
 	}
 
 	actual := models.Book{}
+	// 첫번째 인자로 바이트 슬라이스를 넘겨주고, 두번째로 결과를 담게될 변수 포인터를 넘겨준다
 	if err := json.Unmarshal(body, &actual); err != nil {
 		a.Error(err)
 	}
