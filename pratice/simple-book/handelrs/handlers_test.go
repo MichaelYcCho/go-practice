@@ -248,3 +248,42 @@ func Test_CreateBook_ErrorBind(t *testing.T) {
 	a.Equal(http.StatusBadRequest, w.Code, "HTTP request status code error")
 
 }
+
+func Test_CreateBook_ErrorCreate(t *testing.T) {
+	// ID 중복으로 인한 생성 실패
+	type BookTestCreate struct {
+		// gorm.Model
+		ID        int
+		Author    string
+		Name      string
+		PageCount int
+	}
+	bookTestCreate := BookTestCreate{
+		ID:        1,
+		Author:    "test",
+		Name:      "test",
+		PageCount: 10,
+	}
+
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	_, err := insertTestBook(db)
+	if err != nil {
+		return
+	}
+
+	reqBody, err := json.Marshal(bookTestCreate)
+	if err != nil {
+		a.Error(err)
+	}
+
+	req, w, err := setCreateBookRouter(db, bytes.NewBuffer(reqBody))
+	if err != nil {
+		a.Error(err)
+	}
+
+	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
+	a.Equal(http.StatusInternalServerError, w.Code, "HTTP request status code error")
+}
