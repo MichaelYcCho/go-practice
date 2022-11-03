@@ -217,3 +217,34 @@ func Test_CreateBook_Ok(t *testing.T) {
 	database.ClearTable()
 
 }
+
+func Test_CreateBook_ErrorBind(t *testing.T) {
+	type BookTest struct {
+		ID        int
+		Author    int
+		Name      string
+		PageCount int
+	}
+	bookTest := BookTest{
+		Author:    3,
+		Name:      "test",
+		PageCount: 20,
+	}
+
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+	requestBody, err := json.Marshal(bookTest)
+	if err != nil {
+		a.Error(err)
+	}
+
+	request, w, err := setCreateBookRouter(db, bytes.NewBuffer(requestBody))
+	if err != nil {
+		a.Error(err)
+	}
+
+	a.Equal(http.MethodPost, request.Method, "HTTP request method error")
+	a.Equal(http.StatusBadRequest, w.Code, "HTTP request status code error")
+
+}
