@@ -55,3 +55,19 @@ func setCreateBookRouter(db *gorm.DB,
 	r.ServeHTTP(w, req)
 	return req, w, nil
 }
+
+func setUpdateBookRouter(db *gorm.DB, url string,
+	body *bytes.Buffer) (*http.Request, *httptest.ResponseRecorder, error) {
+	r := gin.New()
+	api := &APIEnv{DB: db}
+	r.PUT("/:id", api.UpdateBook)
+	req, err := http.NewRequest(http.MethodPut, url, body)
+	if err != nil {
+		return req, httptest.NewRecorder(), err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	return req, w, nil
+}
