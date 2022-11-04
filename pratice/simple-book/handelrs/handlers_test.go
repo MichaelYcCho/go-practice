@@ -5,13 +5,11 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
-	"net/http/httptest"
 	"strconv"
 	"testing"
 
 	"github.com/MichaelYcCho/go-practice/pratice/simple-book/database"
 	"github.com/MichaelYcCho/go-practice/pratice/simple-book/models"
-	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
@@ -28,22 +26,6 @@ func insertTestBook(db *gorm.DB) (models.Book, error) {
 	}
 
 	return b, nil
-}
-
-func setGetBooksRouter(db *gorm.DB) (*http.Request, *httptest.ResponseRecorder) {
-	r := gin.New()
-	api := &APIEnv{DB: db}
-	r.GET("/", api.GetBooks)
-	req, err := http.NewRequest(http.MethodGet, "/", nil)
-	if err != nil {
-		panic(err)
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-	return req, w
 }
 
 func Test_GetBooks_Ok(t *testing.T) {
@@ -100,22 +82,6 @@ func Test_GetBooks_EmptyResult(t *testing.T) {
 	database.ClearTable()
 }
 
-func setGetBookRouter(db *gorm.DB, url string) (*http.Request, *httptest.ResponseRecorder) {
-	r := gin.New()
-	api := &APIEnv{DB: db}
-	r.GET("/:id", api.GetBook)
-
-	req, err := http.NewRequest(http.MethodGet, url, nil)
-	if err != nil {
-		panic(err)
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-	return req, w
-}
-
 func Test_GetBook_OK(t *testing.T) {
 	a := assert.New(t)
 	database.ConnectDatabase()
@@ -158,22 +124,6 @@ func Test_GetBook_InvalidId(t *testing.T) {
 
 	a.Equal(http.MethodGet, req.Method, "HTTP request method error")
 	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
-}
-
-func setCreateBookRouter(db *gorm.DB,
-	body *bytes.Buffer) (*http.Request, *httptest.ResponseRecorder, error) {
-	r := gin.New()
-	api := &APIEnv{DB: db}
-	r.POST("/", api.CreateBook)
-	req, err := http.NewRequest(http.MethodPost, "/", body)
-	if err != nil {
-		return req, httptest.NewRecorder(), err
-	}
-
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-	return req, w, nil
 }
 
 func Test_CreateBook_Ok(t *testing.T) {
