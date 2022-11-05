@@ -238,6 +238,53 @@ func Test_CreateBook_ErrorCreate(t *testing.T) {
 	a.Equal(http.StatusInternalServerError, w.Code, "HTTP request status code error")
 }
 
+func Test_UpdateBook_Ok(t *testing.T) {
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	bookTestUpdate := models.Book{
+		Author:    "test",
+		Name:      "test",
+		PageCount: 10,
+	}
+	reqBody1, err1 := json.Marshal(bookTestUpdate)
+	if err1 != nil {
+		a.Error(err1)
+	}
+
+	setCreateBookRouter(db, bytes.NewBuffer(reqBody1))
+
+	bookTestUpdate.ID = 1
+
+	reqBody, err := json.Marshal(bookTestUpdate)
+	if err != nil {
+		a.Error(err)
+	}
+
+	req, w, err := setUpdateBookRouter(db, "/1", bytes.NewBuffer(reqBody))
+	if err != nil {
+		a.Error(err)
+	}
+
+	a.Equal(http.MethodPut, req.Method, "HTTP request method error")
+	a.Equal(http.StatusOK, w.Code, "HTTP request status code error")
+
+	body, err := ioutil.ReadAll(w.Body)
+	if err != nil {
+		a.Error(err)
+	}
+
+	actual := models.Book{}
+	if err := json.Unmarshal(body, &actual); err != nil {
+		a.Error(err)
+	}
+
+	expected := bookTestUpdate
+	a.NotEqual(expected, actual)
+	database.ClearTable()
+}
+
 func Test_UpdateBook_IdNotFound(t *testing.T) {
 	a := assert.New(t)
 	database.ConnectDatabase()
@@ -264,5 +311,74 @@ func Test_UpdateBook_IdNotFound(t *testing.T) {
 	a.Equal(http.MethodPut, req.Method, "HTTP request method error")
 	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
 
+	database.ClearTable()
+}
+
+func Test_UpdateBook_InvalidId(t *testing.T) {
+
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	bookTestUpdate := models.Book{
+		Author:    "dsdsds",
+		Name:      "dsds",
+		PageCount: 10,
+	}
+
+	bookTestUpdate.ID = 2
+
+	reqBody, err := json.Marshal(bookTestUpdate)
+	if err != nil {
+		a.Error(err)
+	}
+
+	req, w, err := setUpdateBookRouter(db, "/aa", bytes.NewBuffer(reqBody))
+	if err != nil {
+		a.Error(err)
+	}
+
+	a.Equal(http.MethodPut, req.Method, "HTTP request method error")
+	a.Equal(http.StatusInternalServerError, w.Code, "HTTP request status code error")
+
+	database.ClearTable()
+}
+
+func Test_UpdateBook_CantShouldBindJSON(t *testing.T) {
+
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	bookTestUpdate := models.Book{
+		Author:    "test",
+		Name:      "test",
+		PageCount: 10,
+	}
+	reqBody1, err1 := json.Marshal(bookTestUpdate)
+	if err1 != nil {
+		a.Error(err1)
+	}
+
+	bookTestUpdate.ID = 1
+	println("아 뭐야", string(reqBody1))
+
+	_, _, err := setCreateBookRouter(db, bytes.NewBuffer(reqBody1))
+	if err != nil {
+		return
+	}
+
+	reqBody, err := json.Marshal("Teste")
+	if err != nil {
+		a.Error(err)
+	}
+
+	req, w, err := setUpdateBookRouter(db, "/1", bytes.NewBuffer(reqBody))
+	if err != nil {
+		a.Error(err)
+	}
+
+	a.Equal(http.MethodPut, req.Method, "HTTP request method error")
+	a.Equal(http.StatusInternalServerError, w.Code, "HTTP request status code error")
 	database.ClearTable()
 }
