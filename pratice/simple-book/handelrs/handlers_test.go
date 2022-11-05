@@ -237,3 +237,32 @@ func Test_CreateBook_ErrorCreate(t *testing.T) {
 	a.Equal(http.MethodPost, req.Method, "HTTP request method error")
 	a.Equal(http.StatusInternalServerError, w.Code, "HTTP request status code error")
 }
+
+func Test_UpdateBook_IdNotFound(t *testing.T) {
+	a := assert.New(t)
+	database.ConnectDatabase()
+	db := database.GetDB()
+
+	bookTestUpdate := models.Book{
+		Author:    "dsdsds",
+		Name:      "dsds",
+		PageCount: 10,
+	}
+
+	bookTestUpdate.ID = 2
+
+	reqBody, err := json.Marshal(bookTestUpdate)
+	if err != nil {
+		a.Error(err)
+	}
+
+	req, w, err := setUpdateBookRouter(db, "/2", bytes.NewBuffer(reqBody))
+	if err != nil {
+		a.Error(err)
+	}
+
+	a.Equal(http.MethodPut, req.Method, "HTTP request method error")
+	a.Equal(http.StatusNotFound, w.Code, "HTTP request status code error")
+
+	database.ClearTable()
+}
