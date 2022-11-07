@@ -1,9 +1,8 @@
 module github.com/MichaelYcCho/go-practice/pratice/simple-book
 
-go 1.18
+go 1.19
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.0
 	github.com/gin-gonic/gin v1.8.1
 	github.com/joho/godotenv v1.4.0
 	github.com/stretchr/testify v1.7.1
