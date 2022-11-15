@@ -11,6 +11,12 @@ func main() {
 
 	db := database.InitialDB()
 
+	// Todo: 마이그레이션 폴더로 이동시키는것이 나을까?
+	modelList := []interface{}{
+		&users.User{},
+	}
+	db.AutoMigrate(modelList...)
+
 	userRepository := users.NewRepository(db)
 	userService := users.NewService(userRepository)
 	userHandler := handler.NewUserHandler(userService)
