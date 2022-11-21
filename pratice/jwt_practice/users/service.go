@@ -40,7 +40,7 @@ func (s *service) Login(input LoginInput) (User, error) {
 	email := input.Email
 	password := input.Password
 
-	user, err := s.repository.FindEmail(email)
+	user, err := s.repository.FindByEmail(email)
 	if err != nil {
 		return user, err
 	}
@@ -53,6 +53,11 @@ func (s *service) Login(input LoginInput) (User, error) {
 	return user, nil
 }
 
-func (s *service) IsEmailAvailable() {
+func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
+	_, err := s.repository.FindByEmail(input.Email)
+	if err != nil {
+		return false, nil
+	}
 
+	return true, nil
 }
