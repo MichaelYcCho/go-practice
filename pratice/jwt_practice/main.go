@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/auth"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/database"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/handler"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
@@ -19,7 +20,8 @@ func main() {
 
 	userRepository := users.NewRepository(db)
 	userService := users.NewService(userRepository)
-	userHandler := handler.NewUserHandler(userService)
+	authService := auth.NewService()
+	userHandler := handler.NewUserHandler(userService, authService)
 
 	router := gin.Default()
 
