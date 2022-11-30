@@ -6,6 +6,7 @@ type Service interface {
 	GenerateToken(userID int) (string, error)
 }
 
+// 메서드를 만들기위해 빈 타입을 선언했다고 이해하는데 더 나은 구조는 없을까?
 type jwtService struct {
 }
 
