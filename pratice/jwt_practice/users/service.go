@@ -2,8 +2,10 @@ package users
 
 import (
 	"errors"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 	"path/filepath"
+	"strings"
 )
 
 type Service interface {
@@ -12,7 +14,7 @@ type Service interface {
 	IsEmailAvailable(input CheckEmailInput) (bool, error)
 	SaveAvatar(ID int, fileLocation string) (User, error)
 	GetUserByID(ID int) (User, error)
-	FileNameUsed(name string) (bool, int, error)
+	MakePathStr(name string) (string, error)
 }
 
 type service struct {
@@ -97,11 +99,34 @@ func (s *service) GetUserByID(ID int) (User, error) {
 	return user, nil
 }
 
-func (s *service) FileNameUsed(name string) (bool, int, error) {
-	println("name: " + name)
+func (s *service) fileNameUsed(name string) (bool, int, error) {
 	matches, err := filepath.Glob("images/*" + name)
 	if err != nil {
 		return false, 0, err
 	}
 	return len(matches) > 0, len(matches), nil
+}
+
+func (s *service) MakePathStr(imageName string) (string, error) {
+	path := fmt.Sprintf("images/%s", imageName)
+	print("히히", path)
+
+	for true {
+
+		match, matchCount, err := s.fileNameUsed(imageName)
+		if err != nil {
+			return "", err
+		}
+		if match {
+			fileSlice := strings.Split(imageName, ".")
+			fileExtension := fileSlice[len(fileSlice)-1]
+			fileName := fmt.Sprintf(strings.Join(fileSlice[:len(fileSlice)-1], ".")+"-%d", matchCount+1)
+			imageName = fmt.Sprintf("%s.%s", fileName, fileExtension)
+		} else {
+			break
+		}
+
+	}
+	path = fmt.Sprintf("images/%s", imageName)
+	return path, nil
 }
