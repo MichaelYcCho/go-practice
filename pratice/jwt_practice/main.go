@@ -4,6 +4,7 @@ import (
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/auth"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/database"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/handler"
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/middleware"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
 	"github.com/gin-gonic/gin"
 )
@@ -30,7 +31,7 @@ func main() {
 	api.POST("/users", userHandler.RegisterUser)
 	api.POST("/sessions", userHandler.Login)
 	api.POST("/email_checkers", userHandler.CheckEmailAvailability)
-	api.POST("/avatars", userHandler.UploadAvatar)
+	api.POST("/avatars", middleware.AuthMiddleware(authService, userService), userHandler.UploadAvatar)
 
 	router.Run()
 

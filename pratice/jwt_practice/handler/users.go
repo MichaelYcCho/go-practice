@@ -133,8 +133,9 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 		return
 	}
 
-	// test ID before implement JWT
-	userID := 1
+	// MiddleWare에서 세팅한 currentUser를 가져온다.
+	currentUser := c.MustGet("currentUser").(users.User)
+	userID := currentUser.ID
 
 	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
 
