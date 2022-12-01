@@ -7,6 +7,7 @@ import (
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strings"
 )
 
 type userHandler struct {
@@ -138,6 +139,15 @@ func (h *userHandler) UploadAvatar(c *gin.Context) {
 	userID := currentUser.ID
 
 	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+	imageName := fmt.Sprintf("%d-%s", userID, file.Filename)
+
+	_, matchCount, err := h.userService.FileNameUsed(imageName)
+	if matchCount > 0 {
+		fileSlice := strings.Split(imageName, ".")
+		fileExtension := fileSlice[len(fileSlice)-1]
+		fileName := strings.Join(fileSlice[:len(fileSlice)-1], ".")
+		path = fmt.Sprintf("images/%s-%d.%s", fileName, matchCount+1, fileExtension)
+	}
 
 	err = c.SaveUploadedFile(file, path)
 	if err != nil {
