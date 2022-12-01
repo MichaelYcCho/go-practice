@@ -3,6 +3,7 @@ package users
 import (
 	"errors"
 	"golang.org/x/crypto/bcrypt"
+	"path/filepath"
 )
 
 type Service interface {
@@ -11,6 +12,7 @@ type Service interface {
 	IsEmailAvailable(input CheckEmailInput) (bool, error)
 	SaveAvatar(ID int, fileLocation string) (User, error)
 	GetUserByID(ID int) (User, error)
+	FileNameUsed(name string) (bool, int, error)
 }
 
 type service struct {
@@ -93,4 +95,13 @@ func (s *service) GetUserByID(ID int) (User, error) {
 		return user, errors.New("No user found on with that ID")
 	}
 	return user, nil
+}
+
+func (s *service) FileNameUsed(name string) (bool, int, error) {
+	println("name: " + name)
+	matches, err := filepath.Glob("images/*" + name)
+	if err != nil {
+		return false, 0, err
+	}
+	return len(matches) > 0, len(matches), nil
 }
