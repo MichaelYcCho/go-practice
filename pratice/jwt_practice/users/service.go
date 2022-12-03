@@ -3,6 +3,7 @@ package users
 import (
 	"errors"
 	"fmt"
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/utils"
 	"golang.org/x/crypto/bcrypt"
 	"path/filepath"
 	"strings"
@@ -99,28 +100,27 @@ func (s *service) GetUserByID(ID int) (User, error) {
 	return user, nil
 }
 
-func (s *service) fileNameUsed(name string) (bool, int, error) {
+func (s *service) fileNameUsed(name string) (bool, error) {
 	matches, err := filepath.Glob("images/*" + name)
 	if err != nil {
-		return false, 0, err
+		return false, err
 	}
-	return len(matches) > 0, len(matches), nil
+	return len(matches) > 0, nil
 }
 
 func (s *service) MakePathStr(imageName string) (string, error) {
 	path := fmt.Sprintf("images/%s", imageName)
-	print("히히", path)
 
 	for true {
-
-		match, matchCount, err := s.fileNameUsed(imageName)
+		match, err := s.fileNameUsed(imageName)
 		if err != nil {
 			return "", err
 		}
 		if match {
+			randomStr := utils.RandString(2)
 			fileSlice := strings.Split(imageName, ".")
 			fileExtension := fileSlice[len(fileSlice)-1]
-			fileName := fmt.Sprintf(strings.Join(fileSlice[:len(fileSlice)-1], ".")+"-%d", matchCount+1)
+			fileName := fmt.Sprintf(strings.Join(fileSlice[:len(fileSlice)-1], ".")+"_%s", randomStr)
 			imageName = fmt.Sprintf("%s.%s", fileName, fileExtension)
 		} else {
 			break
