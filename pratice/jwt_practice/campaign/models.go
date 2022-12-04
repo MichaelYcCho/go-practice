@@ -2,6 +2,7 @@ package campaign
 
 import "time"
 
+// CampaignImages와 Campaign을 1:N 관계로 설정
 type Campaign struct {
 	ID               int
 	UserID           int

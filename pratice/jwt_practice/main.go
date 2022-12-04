@@ -19,7 +19,7 @@ func main() {
 	}
 	db.AutoMigrate(modelList...)
 
-	userRepository := users.NewRepository(db)
+	userRepository := users.NewSelector(db)
 	userService := users.NewService(userRepository)
 	authService := auth.NewService()
 	userHandler := handler.NewUserHandler(userService, authService)

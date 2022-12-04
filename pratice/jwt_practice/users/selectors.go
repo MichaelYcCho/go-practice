@@ -13,7 +13,7 @@ type selector struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *selector {
+func NewSelector(db *gorm.DB) *selector {
 	return &selector{db}
 }
 
