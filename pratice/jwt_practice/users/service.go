@@ -19,11 +19,11 @@ type Service interface {
 }
 
 type service struct {
-	repository Repository
+	selector Selector
 }
 
-func NewService(repository Repository) *service {
-	return &service{repository}
+func NewService(selector Selector) *service {
+	return &service{selector}
 }
 
 func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
@@ -38,7 +38,7 @@ func (s *service) RegisterUser(input RegisterUserInput) (User, error) {
 	}
 	user.PasswordHash = string(passwordHash)
 	user.Role = "user"
-	newUser, err := s.repository.Save(user)
+	newUser, err := s.selector.Save(user)
 	if err != nil {
 		return newUser, err
 	}
@@ -50,7 +50,7 @@ func (s *service) Login(input LoginInput) (User, error) {
 	email := input.Email
 	password := input.Password
 
-	user, err := s.repository.FindByEmail(email)
+	user, err := s.selector.FindByEmail(email)
 	if err != nil {
 		return user, err
 	}
@@ -64,7 +64,7 @@ func (s *service) Login(input LoginInput) (User, error) {
 }
 
 func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
-	_, err := s.repository.FindByEmail(input.Email)
+	_, err := s.selector.FindByEmail(input.Email)
 	if err != nil {
 		return false, nil
 	}
@@ -73,14 +73,14 @@ func (s *service) IsEmailAvailable(input CheckEmailInput) (bool, error) {
 }
 
 func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
-	user, err := s.repository.FindByID(ID)
+	user, err := s.selector.FindByID(ID)
 	if err != nil {
 		return user, err
 	}
 
 	user.AvatarFileName = fileLocation
 
-	updatedUser, err := s.repository.Update(user)
+	updatedUser, err := s.selector.Update(user)
 	if err != nil {
 		return updatedUser, err
 	}
@@ -90,7 +90,7 @@ func (s *service) SaveAvatar(ID int, fileLocation string) (User, error) {
 
 func (s *service) GetUserByID(ID int) (User, error) {
 
-	user, err := s.repository.FindByID(ID)
+	user, err := s.selector.FindByID(ID)
 	if err != nil {
 		return user, err
 	}
