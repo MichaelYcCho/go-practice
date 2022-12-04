@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/auth"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/campaign"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/database"
@@ -25,12 +24,8 @@ func main() {
 
 	userRepository := users.NewSelector(db)
 	campaignRepository := campaign.NewSelector(db)
-
-	campaigns, _ := campaignRepository.FindByUserID(1)
-	for _, campaign := range campaigns {
-		fmt.Println(campaign.Name)
-		fmt.Println(campaign.CampaignImages[0].FileName)
-	}
+	campaignService := campaign.NewService(campaignRepository)
+	print(campaignService)
 
 	userService := users.NewService(userRepository)
 	authService := auth.NewService()
