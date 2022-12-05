@@ -1,6 +1,9 @@
 package campaign
 
-import "time"
+import (
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
+	"time"
+)
 
 // CampaignImages와 Campaign을 1:N 관계로 설정
 type Campaign struct {
@@ -17,6 +20,7 @@ type Campaign struct {
 	CreatedAt        time.Time
 	UpdatedAt        time.Time
 	CampaignImages   []CampaignImage
+	User 		   	 users.User
 }
 
 type CampaignImage struct {
