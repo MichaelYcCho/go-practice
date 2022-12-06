@@ -5,6 +5,7 @@ import "gorm.io/gorm"
 type Selector interface {
 	FindAll() ([]Campaign, error)
 	FindByUserID(userID int) ([]Campaign, error)
+	FindByID(ID int) (Campaign, error)
 }
 
 type selector struct {
@@ -36,4 +37,15 @@ func (s *selector) FindByUserID(userID int) ([]Campaign, error) {
 		return campaigns, err
 	}
 	return campaigns, nil
+}
+
+func (s *selector) FindByID(ID int) (Campaign, error) {
+	var campaign Campaign
+
+	err := s.db.Preload("User").Preload("CampaignImages").Where("id = ?", ID).Find(&campaign).Error
+	if err != nil {
+		return campaign, err
+	}
+
+	return campaign, nil
 }
