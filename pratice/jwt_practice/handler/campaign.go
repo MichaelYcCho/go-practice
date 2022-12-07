@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/campaign"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/helper"
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -56,4 +57,33 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 
+}
+
+func (h *campaignHandler) CreateCampaign(c *gin.Context) {
+	var input campaign.CreateCampaignInput
+
+	err := c.ShouldBindJSON(&input)
+	// input에대한 유효성검사
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Failed to create campaign", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(users.User)
+
+	input.User = currentUser
+	newCampaign, err := h.service.CreateCampaign(input)
+	if err != nil {
+		response := helper.APIResponse("Failed to create campaign", http.StatusBadRequest, "error", nil)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	response := helper.APIResponse("Success to create campaign", http.StatusOK, "success", campaign.FormatCampaign(newCampaign))
+	c.JSON(http.StatusOK, response)
 }
