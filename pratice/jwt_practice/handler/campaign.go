@@ -37,7 +37,7 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 
 	var input campaign.GetCampaignDetailInput
 
-	// input의 uri 값을 기반으로 매핑함 
+	// input의 uri 값을 기반으로 매핑함
 	err := c.ShouldBindUri(&input)
 	if err != nil {
 		response := helper.APIResponse("Failed to get detail of campaign", http.StatusBadRequest, "error", nil)
