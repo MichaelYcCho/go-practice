@@ -36,7 +36,7 @@ func (h *campaignHandler) GetCampaigns(c *gin.Context) {
 
 func (h *campaignHandler) GetCampaign(c *gin.Context) {
 
-	var input campaign.GetCampaignDetailInput
+	var input campaign.InputCampaignDetail
 
 	// input의 uri 값을 기반으로 매핑함
 	err := c.ShouldBindUri(&input)
@@ -60,7 +60,7 @@ func (h *campaignHandler) GetCampaign(c *gin.Context) {
 }
 
 func (h *campaignHandler) CreateCampaign(c *gin.Context) {
-	var input campaign.CreateCampaignInput
+	var input campaign.InputCampaign
 
 	err := c.ShouldBindJSON(&input)
 	// input에대한 유효성검사

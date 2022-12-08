@@ -7,6 +7,7 @@ type Selector interface {
 	FindByUserID(userID int) ([]Campaign, error)
 	FindByID(ID int) (Campaign, error)
 	Create(campaign Campaign) (Campaign, error)
+	Update(campaign Campaign) (Campaign, error)
 }
 
 type selector struct {
@@ -53,6 +54,14 @@ func (s *selector) FindByID(ID int) (Campaign, error) {
 
 func (s *selector) Create(campaign Campaign) (Campaign, error) {
 	err := s.db.Create(&campaign).Error
+	if err != nil {
+		return campaign, err
+	}
+	return campaign, nil
+}
+
+func (s *selector) Update(campaign Campaign) (Campaign, error) {
+	err := s.db.Save(&campaign).Error
 	if err != nil {
 		return campaign, err
 	}

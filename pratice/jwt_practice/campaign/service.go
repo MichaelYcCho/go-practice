@@ -7,8 +7,9 @@ import (
 
 type Service interface {
 	GetCampaigns(userID int) ([]Campaign, error)
-	GetCampaignByID(input GetCampaignDetailInput) (Campaign, error)
-	CreateCampaign(input CreateCampaignInput) (Campaign, error)
+	GetCampaignByID(input InputCampaignDetail) (Campaign, error)
+	CreateCampaign(input InputCampaign) (Campaign, error)
+	UpdateCampaign(inputID InputCampaignDetail, inputData InputCampaign) (Campaign, error)
 }
 
 type service struct {
@@ -35,7 +36,7 @@ func (s *service) GetCampaigns(userID int) ([]Campaign, error) {
 	return campaigns, nil
 }
 
-func (s *service) GetCampaignByID(input GetCampaignDetailInput) (Campaign, error) {
+func (s *service) GetCampaignByID(input InputCampaignDetail) (Campaign, error) {
 	campaign, err := s.selector.FindByID(input.ID)
 	if err != nil {
 		return campaign, err
@@ -43,7 +44,7 @@ func (s *service) GetCampaignByID(input GetCampaignDetailInput) (Campaign, error
 	return campaign, nil
 }
 
-func (s *service) CreateCampaign(input CreateCampaignInput) (Campaign, error) {
+func (s *service) CreateCampaign(input InputCampaign) (Campaign, error) {
 	campaign := Campaign{}
 	campaign.Name = input.Name
 	campaign.ShortDescriptions = input.ShortDescriptions
@@ -62,4 +63,24 @@ func (s *service) CreateCampaign(input CreateCampaignInput) (Campaign, error) {
 	}
 
 	return newCampaign, nil
+}
+
+func (s *service) UpdateCampaign(inputID InputCampaignDetail, inputData InputCampaign) (Campaign, error) {
+	campaign, err := s.selector.FindByID(inputID.ID)
+	if err != nil {
+		return campaign, err
+	}
+
+	campaign.Name = inputData.Name
+	campaign.ShortDescriptions = inputData.ShortDescriptions
+	campaign.Descriptions = inputData.Descriptions
+	campaign.Perks = inputData.Perks
+	campaign.GoalAmount = inputData.GoalAmount
+
+	updatedCampaign, err := s.selector.Update(campaign)
+	if err != nil {
+		return updatedCampaign, err
+	}
+
+	return updatedCampaign, nil
 }
