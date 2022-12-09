@@ -8,6 +8,8 @@ type Selector interface {
 	FindByID(ID int) (Campaign, error)
 	Create(campaign Campaign) (Campaign, error)
 	Update(campaign Campaign) (Campaign, error)
+	CreateImage(campaignImage CampaignImage) (CampaignImage, error)
+	MarkAllImagesAsNonPrimary(campaignID int) (bool, error)
 }
 
 type selector struct {
@@ -66,4 +68,21 @@ func (s *selector) Update(campaign Campaign) (Campaign, error) {
 		return campaign, err
 	}
 	return campaign, nil
+}
+
+func (s *selector) CreateImage(campaignImage CampaignImage) (CampaignImage, error) {
+	err := s.db.Create(&campaignImage).Error
+	if err != nil {
+		return campaignImage, err
+	}
+	return campaignImage, nil
+}
+
+func (s *selector) MarkAllImagesAsNonPrimary(campaignID int) (bool, error) {
+	/* Update CampaignImage set is_primary = false where campaign_id = 1 */
+	err := s.db.Model(&CampaignImage{}).Where("campaign_id = ?", campaignID).Update("is_primary", false).Error
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
