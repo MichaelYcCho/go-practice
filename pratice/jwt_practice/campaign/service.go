@@ -1,6 +1,7 @@
 package campaign
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gosimple/slug"
 )
@@ -10,6 +11,7 @@ type Service interface {
 	GetCampaignByID(input InputCampaignDetail) (Campaign, error)
 	CreateCampaign(input InputCampaign) (Campaign, error)
 	UpdateCampaign(inputID InputCampaignDetail, inputData InputCampaign) (Campaign, error)
+	SaveCampaignImage(input InputCreateCampaignImage, fileLocation string) (CampaignImage, error)
 }
 
 type service struct {
@@ -83,4 +85,38 @@ func (s *service) UpdateCampaign(inputID InputCampaignDetail, inputData InputCam
 	}
 
 	return updatedCampaign, nil
+}
+
+func (s *service) SaveCampaignImage(input InputCreateCampaignImage, fileLocation string) (CampaignImage, error) {
+
+	campaign, err := s.selector.FindByID(input.CampaignID)
+	if err != nil {
+		return CampaignImage{}, err
+	}
+
+	if campaign.UserID != input.User.ID {
+		return CampaignImage{}, errors.New("not an owner of the campaign")
+	}
+
+	isPrimary := 0
+	if input.IsPrimary {
+		isPrimary = 1
+		_, err := s.selector.MarkAllImagesAsNonPrimary(input.CampaignID)
+		if err != nil {
+			return CampaignImage{}, err
+		}
+	}
+
+	campaignImage := CampaignImage{}
+	campaignImage.CampaignID = input.CampaignID
+	campaignImage.IsPrimary = isPrimary
+	campaignImage.FileName = fileLocation
+
+	newCampaignImage, err := s.selector.CreateImage(campaignImage)
+	if err != nil {
+		return newCampaignImage, err
+	}
+
+	return newCampaignImage, nil
+
 }
