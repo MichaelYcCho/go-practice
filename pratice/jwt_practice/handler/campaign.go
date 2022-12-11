@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/campaign"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/helper"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
@@ -120,5 +121,57 @@ func (h *campaignHandler) UpdateCampaign(c *gin.Context) {
 		return
 	}
 	response := helper.APIResponse("Success to create campaign", http.StatusOK, "success", campaign.FormatCampaign(updatedCampaign))
+	c.JSON(http.StatusOK, response)
+}
+
+func (h *campaignHandler) UploadImage(c *gin.Context) {
+
+	var input campaign.InputCreateCampaignImage
+
+	err := c.ShouldBind(&input)
+	if err != nil {
+		errors := helper.FormatValidationError(err)
+
+		errorMessage := gin.H{"errors": errors}
+
+		response := helper.APIResponse("Failed to update campaign", http.StatusUnprocessableEntity, "error", errorMessage)
+		c.JSON(http.StatusUnprocessableEntity, response)
+		return
+	}
+
+	currentUser := c.MustGet("currentUser").(users.User)
+	input.User = currentUser
+	userID := currentUser.ID
+
+	file, err := c.FormFile("file")
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload campaign image", http.StatusBadRequest, "error", data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	path := fmt.Sprintf("images/%d-%s", userID, file.Filename)
+
+	// 해당 path로 file 저장
+	err = c.SaveUploadedFile(file, path)
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload campaign image", http.StatusBadRequest, "error", data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	// CampaignImage Campaign과 매핑
+	_, err = h.service.SaveCampaignImage(input, path)
+	if err != nil {
+		data := gin.H{"is_uploaded": false}
+		response := helper.APIResponse("Failed to upload campaign image", http.StatusBadRequest, "error", data)
+		c.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	data := gin.H{"is_uploaded": true}
+	response := helper.APIResponse("Campaign Image successfuly uploaded", http.StatusOK, "success", data)
 	c.JSON(http.StatusOK, response)
 }
