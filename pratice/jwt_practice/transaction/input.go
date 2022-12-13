@@ -1,8 +1,10 @@
 package transaction
 
-import "os/user"
+import (
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
+)
 
 type InputGetCampaignTransaction struct {
 	ID   int `uri:"id" binding:"required"`
-	User user.User
+	User users.User
 }
