@@ -6,6 +6,7 @@ import (
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/database"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/handler"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/middleware"
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/transaction"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/users"
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,7 @@ func main() {
 		&users.User{},
 		&campaign.Campaign{},
 		&campaign.CampaignImage{},
+		&transaction.Transaction{},
 	}
 	db.AutoMigrate(modelList...)
 
@@ -30,6 +32,10 @@ func main() {
 	userService := users.NewService(userRepository)
 	authService := auth.NewService()
 	userHandler := handler.NewUserHandler(userService, authService)
+
+	transactionRepository := transaction.NewSelector(db)
+	transactionService := transaction.NewService(transactionRepository, campaignRepository)
+	transactionHandler := handler.NewTransactionHandler(transactionService)
 
 	router := gin.Default()
 	router.Static("/images", "./images")
@@ -46,6 +52,8 @@ func main() {
 	api.POST("/campaigns", middleware.AuthMiddleware(authService, userService), campaignHandler.CreateCampaign)
 	api.PUT("/campaigns/:id", middleware.AuthMiddleware(authService, userService), campaignHandler.UpdateCampaign)
 	api.POST("/campaign-images", middleware.AuthMiddleware(authService, userService), campaignHandler.UploadImage)
+
+	api.GET("/campaigns/:id/transactions", middleware.AuthMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
 
 	router.Run()
 
