@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/auth"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/campaign"
+	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/company"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/database"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/handler"
 	"github.com/MichaelYcCho/go-practice/pratice/jwt_practice/middleware"
@@ -21,17 +22,23 @@ func main() {
 		&campaign.Campaign{},
 		&campaign.CampaignImage{},
 		&transaction.Transaction{},
+		&company.Company{},
 	}
 	db.AutoMigrate(modelList...)
+	authService := auth.NewService()
 
 	userRepository := users.NewSelector(db)
+	userService := users.NewService(userRepository)
+	userHandler := handler.NewUserHandler(userService, authService)
+
 	campaignRepository := campaign.NewSelector(db)
 	campaignService := campaign.NewService(campaignRepository)
 	campaignHandler := handler.NewCampaignHandler(campaignService)
 
-	userService := users.NewService(userRepository)
-	authService := auth.NewService()
-	userHandler := handler.NewUserHandler(userService, authService)
+	companyRepository := company.NewSelector(db)
+	companyService := company.NewService(companyRepository)
+	companyHandler := handler.NewCompanyHandler(companyService)
+
 
 	transactionRepository := transaction.NewSelector(db)
 	transactionService := transaction.NewService(transactionRepository, campaignRepository)
@@ -56,6 +63,8 @@ func main() {
 	api.GET("/campaigns/:id/transactions", middleware.AuthMiddleware(authService, userService), transactionHandler.GetCampaignTransactions)
 
 	api.GET("/transactions", middleware.AuthMiddleware(authService, userService), transactionHandler.GetUserTransactions)
+
+	api.POST("/companies", companyHandler.CreateCompany)
 
 	router.Run()
 
