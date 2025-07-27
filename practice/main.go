@@ -1,9 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"github.com/yc/go-practice/practice/variable"
+)
 
 func main() {
-    message := getMessage()
-    fmt.Println(message)
+    variable.Variable()
 }
-
