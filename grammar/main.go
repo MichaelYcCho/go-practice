@@ -7,7 +7,7 @@ import (
 // grammar 패키지를 가져옴
 
 func main() {
-    grammar.SliceCapacityTwo()
-
+    //grammar.SliceCapacityTwo()
+    grammar.Pointers()
     
 }
