@@ -180,3 +180,129 @@ func Pointers() {
     demonstrateLinkedList()
 }
 
+// ---------------------- 함수 정의 ----------------------
+
+// PersonInfo 구조체 정의 (Person과 이름 충돌 방지)
+type PersonInfo struct {
+    Name string
+    Age  int
+}
+
+// 값 전달 함수 (원본 값이 변경되지 않음)
+func swapByValue(a, b int) {
+    fmt.Printf("  swapByValue 내부 - 교환 전: a=%d, b=%d\n", a, b)
+    a, b = b, a
+    fmt.Printf("  swapByValue 내부 - 교환 후: a=%d, b=%d\n", a, b)
+}
+
+// 포인터 전달 함수 (원본 값이 변경됨)
+func swapByPointer(a, b *int) {
+    fmt.Printf("  swapByPointer 내부 - 교환 전: *a=%d, *b=%d\n", *a, *b)
+    *a, *b = *b, *a
+    fmt.Printf("  swapByPointer 내부 - 교환 후: *a=%d, *b=%d\n", *a, *b)
+}
+
+// 구조체 포인터를 매개변수로 받는 함수
+func updatePersonAge(p *PersonInfo, newAge int) {
+    if p != nil {
+        p.Age = newAge  // (*p).Age = newAge와 동일
+    }
+}
+
+// 연결 리스트 노드 구조체
+type ListNode struct {
+    Value int
+    Next  *ListNode    // 다음 노드를 가리키는 포인터
+}
+
+// 연결 리스트 예제 함수
+func demonstrateLinkedList() {
+    // 노드들 생성
+    node1 := &ListNode{Value: 1, Next: nil}
+    node2 := &ListNode{Value: 2, Next: nil}
+    node3 := &ListNode{Value: 3, Next: nil}
+    
+    // 노드들 연결
+    node1.Next = node2
+    node2.Next = node3
+    
+    // 연결 리스트 순회
+    fmt.Println("연결 리스트 순회:")
+    current := node1
+    for current != nil {
+        fmt.Printf("  노드 값: %d\n", current.Value)
+        current = current.Next
+    }
+}
+
+// ---------------------- 추가 유틸리티 함수들 ----------------------
+
+// 포인터 안전성을 위한 헬퍼 함수들
+func SafeIntPointerAccess(ptr *int) int {
+    if ptr != nil {
+        return *ptr
+    }
+    return 0 // 기본값 반환
+}
+
+func SafeStringPointerAccess(ptr *string) string {
+    if ptr != nil {
+        return *ptr
+    }
+    return "" // 기본값 반환
+}
+
+// 포인터 비교 예제
+func PointerComparison() {
+    fmt.Println("\n=== 포인터 비교 예제 ===")
+    
+    x := 10
+    y := 10
+    
+    ptr1 := &x
+    ptr2 := &y
+    ptr3 := &x
+    
+    fmt.Printf("x의 주소: %p, y의 주소: %p\n", &x, &y)
+    fmt.Printf("ptr1: %p, ptr2: %p, ptr3: %p\n", ptr1, ptr2, ptr3)
+    
+    // 포인터 주소 비교
+    fmt.Printf("ptr1 == ptr2: %t (다른 변수를 가리킴)\n", ptr1 == ptr2)
+    fmt.Printf("ptr1 == ptr3: %t (같은 변수를 가리킴)\n", ptr1 == ptr3)
+    
+    // 포인터가 가리키는 값 비교
+    fmt.Printf("*ptr1 == *ptr2: %t (값은 같음)\n", *ptr1 == *ptr2)
+}
+
+// 큰 구조체 정의 (패키지 레벨에서 정의)
+type LargeStruct struct {
+    Data [1000]int
+    Name string
+    ID   int
+}
+
+// 메모리 효율성 비교 예제
+func MemoryEfficiencyExample() {
+    fmt.Println("\n=== 메모리 효율성 비교 ===")
+    
+    largeData := LargeStruct{
+        Name: "Large Object",
+        ID:   123,
+    }
+    
+    fmt.Println("❌ 비효율적: 값 전달 (구조체 전체 복사)")
+    processLargeStructByValue(largeData)
+    
+    fmt.Println("✅ 효율적: 포인터 전달 (주소만 복사)")
+    processLargeStructByPointer(&largeData)
+}
+
+func processLargeStructByValue(data LargeStruct) {
+    // 전체 구조체가 복사됨 (메모리 사용량 증가)
+    fmt.Printf("  값 전달로 받은 데이터: %s (ID: %d)\n", data.Name, data.ID)
+}
+
+func processLargeStructByPointer(data *LargeStruct) {
+    // 포인터만 복사됨 (8바이트, 메모리 효율적)
+    fmt.Printf("  포인터 전달로 받은 데이터: %s (ID: %d)\n", data.Name, data.ID)
+}
